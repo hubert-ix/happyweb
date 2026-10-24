@@ -16,7 +16,7 @@
   {/if}
 
   <div class="input">
-    {@render children()}
+    {@render children?.()}
   </div>
 
   {#if errorMessage}
@@ -30,7 +30,7 @@
 
 <style>
   .form-item {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   label {
@@ -42,7 +42,7 @@
   }
 
   .input {
-    margin-top: 0.5rem;
+    margin-top: 0.1rem;
   }
 
   .error {

@@ -10,3 +10,4 @@
 {#key data.page.id}
 	<PageForm {form} page={data.page} />
 {/key}
+

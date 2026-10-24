@@ -77,9 +77,10 @@ h1 {
 
 a {
 	text-decoration: underline;
+  text-underline-position: under;
 	outline: none;
 	cursor: pointer;
-	color: #8923e5;
+	color: #000;
 }
 
 /* misc */

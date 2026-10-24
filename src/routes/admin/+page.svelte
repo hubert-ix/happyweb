@@ -2,6 +2,7 @@
   import CirclePlus from '@lucide/svelte/icons/circle-plus';
   import Info from '@lucide/svelte/icons/info';
   import Button from '#lib/UI/Button.svelte';
+  import PageTree from './PageTree.svelte';
 
   let { data } = $props();
 </script>
@@ -25,21 +26,15 @@
   </Button>
 </div>
 
-{#await data.pages then pages}
-  {#each pages as page (page.id)}
-    <div class="page">
-      <a href="/admin/page/{page.id}">
-        {page.title}
-      </a>
-    </div>
-  {/each}
-{/await}
+<div class="pages">
+  {#await data.pages then pages}
+    <PageTree {pages} />
+  {/await}
+</div>
 
 
 <style>
-  .page {
-    border: solid 1px #ccc;
-    padding: 0.5rem;
-    margin-bottom: -1px;
+  .pages {
+    max-width: 50rem;
   }
 </style>
