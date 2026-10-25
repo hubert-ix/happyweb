@@ -17,7 +17,7 @@
 	<div class="container header">
 		<nav>
 			{#each data.pages as page}
-				<a href={page.path}>{page.title}</a>
+				<a href="/{page.path}">{page.title}</a>
 			{/each}
 		</nav>
 		{#if data.user}
