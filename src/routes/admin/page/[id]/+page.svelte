@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/state';
 	import PageForm from '../PageForm.svelte';
 
 	let { data, form } = $props();

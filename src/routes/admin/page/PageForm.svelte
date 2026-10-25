@@ -1,4 +1,5 @@
 <script>
+	import { page as currentPage } from '$app/state';
 	import { enhance } from '$app/forms';
 	import { validatePage } from './pageValidation.js';
 	import Button from '#lib/UI/Button.svelte';
@@ -115,7 +116,7 @@
 			{submitting ? submittingLabel : submitLabel}
 		</Button>
 
-		<a href="/admin">Nope, cancel that</a>
+		<a href={currentPage.url.searchParams.get('returnURL') ?? '/admin'}>Nope, cancel that</a>
 	</div>
 
   {#if form?.errors?.form}

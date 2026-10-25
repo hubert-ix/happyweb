@@ -1,9 +1,14 @@
-export const load = async ({ locals }) => {
-	let [ response1, response2 ] = await Promise.all([
+// src/routes/+layout.server.js
+export const load = async ({ locals, depends }) => {
+	depends('app:menu');
+	const user = locals.user ?? (await locals.safeGetSession()).user;
+	const [menu, profile] = await Promise.all([
 		locals.supabase.from('page').select('id, title, path').eq('parent_id', 0).eq('published', true).eq('in_menu', true).order('display_order', { ascending: true }),
-		locals.supabase.from('user').select().eq('id', locals.user.id)
+		user
+			? locals.supabase.from('user').select('first_name').eq('id', user.id).maybeSingle()
+			: { data: null }
 	]);
-	let pages = response1.data;
-	let user = response2.data[0];
-	return { pages, user };
+	if (menu.error) console.error('Failed to load menu:', menu.error);
+	if (profile.error) console.error('Failed to load user profile:', profile.error);
+	return { pages: menu.data ?? [], user: profile.data };
 };

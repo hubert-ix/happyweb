@@ -9,7 +9,7 @@
 <h1>
   {data.page.title}
   {#if data.user}
-    <button class="edit-page" onclick={() => goto('/admin/page/' + data.page?.id)}>
+    <button class="edit-page" onclick={() => goto('/admin/page/' + data.page?.id + '?returnURL=/' + data.page.path)}>
       <Pencil />
     </button>
   {/if}

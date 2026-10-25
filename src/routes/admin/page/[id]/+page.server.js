@@ -18,7 +18,7 @@ export const load = async ({ locals, params }) => {
 };
 
 export const actions = {
-	default: async ({ request, locals, params }) => {
+	default: async ({ request, locals, params, url }) => {
 		let data = await request.formData();
 		// get the form values
 		let title = data.get('title');
@@ -44,6 +44,6 @@ export const actions = {
 			return fail(500, { values, errors: { form: 'Could not create the page. Please try again.' } });
 		}
 		// redirect
-		redirect(303, '/admin');
+		redirect(303, url.searchParams.get('returnURL') ?? '/admin');
 	}
 };
