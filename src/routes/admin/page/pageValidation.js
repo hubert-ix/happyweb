@@ -1,5 +1,3 @@
-import { slugify } from '#lib/slugify.js';
-
 export function validatePage({ title = '', path = '', published = false, meta_title = '', meta_description = '', in_menu = true }) {
 	let errors = {};
 	if (!title) {

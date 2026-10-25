@@ -9,8 +9,8 @@
 		const returnURL = page.url.searchParams.get('returnURL');
 		const query = returnURL ? `?returnURL=${encodeURIComponent(returnURL)}` : '';
 		return [
-			{ label: 'Content', path: base, href: base + query, value: "" },
-			{ label: 'Settings', path: `${base}/settings`, href: `${base}/settings${query}`, value: "settings" }
+			{ label: 'Awesome content', path: base, href: base + query, value: "" },
+			{ label: 'Superb settings', path: `${base}/settings`, href: `${base}/settings${query}`, value: "settings" }
 		];
 	});
 </script>

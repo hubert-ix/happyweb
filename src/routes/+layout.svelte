@@ -1,7 +1,6 @@
 <script>
 	import { page } from '$app/state';
 	import FaceSlightlySmiling from '@lucide/svelte/icons/face-slightly-smiling';
-	import favicon from '#lib/assets/favicon.svg';
   import './styles.css';
 
 	let { data, children } = $props();
@@ -9,7 +8,7 @@
 
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/images/favicon.png" />
 	<title>{page.data.pageTitle} | Happy Web</title>
 </svelte:head>
 
@@ -38,7 +37,8 @@
 
 <style>
 	header {
-		padding-top: 1rem;
+		padding: 1rem 0;
+		border-bottom: solid 2px #eee;
 	}
 
 	.container.header {

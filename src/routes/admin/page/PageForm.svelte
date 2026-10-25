@@ -94,15 +94,15 @@
 	-->
 
 	{#if page}
-		<FormItem label="Text in the top bar of the browser" id="meta_title">
+		<FormItem label="Text in the top bar of the browser" id="meta_title" description="If you leave this empty we'll use the page title">
 			<TextInput name="meta_title" bind:value={metaTitle} autocomplete="off" />
 		</FormItem>
 
-		<FormItem label="Description" id="meta_description">
-			<TextInput name="meta_description" controlType="textarea" placeholder="This is optional. It is used for search engines like Google. Let's type something that will describe your awesome page!"	bind:value={metaDescription} autocomplete="off" />
+		<FormItem label="Description" id="meta_description" description="This is also optional. It is used for search engines like Google">
+			<TextInput name="meta_description" controlType="textarea"	bind:value={metaDescription} autocomplete="off" />
 		</FormItem>
 
-		<FormItem label="Show this page in the menu system" id="in_menu">
+		<FormItem label="Show this page in the menu system" id="in_menu" description="If you have something like a privacy policy page that you don't want to appear in the menu, uncheck this">
 			<Toggle name="in_menu" bind:checked={inMenu} />
 		</FormItem>
 

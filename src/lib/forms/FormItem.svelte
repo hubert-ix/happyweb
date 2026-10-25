@@ -39,7 +39,9 @@
 	}
 
   .description {
-    color: #888;
+    color: #de78ba;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
   }
 
   .input {
