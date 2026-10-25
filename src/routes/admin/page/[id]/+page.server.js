@@ -34,7 +34,15 @@ export const actions = {
 			return fail(400, { values, errors });
 		}
 		// update the page
-		await locals.supabase.from('page').update(values).eq('id', params.id);
+		let { error} = await locals.supabase.from('page').update(values).eq('id', params.id);
+		if (error) {
+			// 23505 = unique_violation: the path is already taken
+			if (error.code === '23505') {
+				return fail(400, { values, errors: { path: 'A page with this address already exists.' } });
+			}
+			console.error('Failed to create page:', error);
+			return fail(500, { values, errors: { form: 'Could not create the page. Please try again.' } });
+		}
 		// redirect
 		redirect(303, '/admin');
 	}

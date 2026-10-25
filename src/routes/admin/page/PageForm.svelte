@@ -21,25 +21,37 @@
 	let title = $state(initial.title ?? '');
 	let path = $state(initial.path ?? '');
 	let parentId = $state(initial.parent_id ?? 0);
-	let metaTitle = $state(initial.meta_title ?? 0);
-	let metaDescription = $state(initial.meta_description ?? 0);
+	let metaTitle = $state(initial.meta_title ?? '');
+	let metaDescription = $state(initial.meta_description ?? '');
 	let published = $state(initial.published ?? false);
 	let inMenu = $state(initial.in_menu ?? true);
 
 	let pathTouched = $state(Boolean(initial.path));
 	let submitting = $state(false);
 	let clientErrors = $state(null);
-	let errors = $derived(clientErrors ?? form?.errors);
+	let errors = $derived(form?.errors ?? null);
+
+	function recheck(fields, values) {
+		if (!errors) return;
+		const fresh = validatePage({ title, path, published, ...values }).errors ?? {};
+		const next = { ...errors };
+		for (const field of fields) {
+			if (next[field]) next[field] = fresh[field];
+		}
+		errors = next;
+	}
 
 	function onTitleInput(e) {
+		const value = e.target.value;
 		if (!pathTouched) {
-      path = slugify(e.target.value);
+      path = slugify(value);
     }
+		recheck(pathTouched ? ['title'] : ['title', 'path'], { title: value, path });
 	}
 
 	function onPathInput(e) {
-		// Clearing the field hands control back to the title
 		pathTouched = e.target.value !== '';
+		recheck(['path'], { path: e.target.value });
 	}
 
 	function onPathBlur() {
@@ -47,8 +59,11 @@
 	}
 
 	function handleSubmit({ cancel }) {
-		clientErrors = validatePage({ title, path, published }).errors;
-		if (clientErrors) return cancel();
+		const clientErrors = validatePage({ title, path, published }).errors;
+		if (clientErrors) {
+			errors = clientErrors;
+			return cancel();
+		}
 		submitting = true;
 		return async ({ update }) => {
 			await update({ reset: false });
@@ -58,7 +73,7 @@
 </script>
 
 
-<form	method="POST"use:enhance={handleSubmit}>
+<form	method="POST" use:enhance={handleSubmit}>
 	
 	<FormItem label="Page title" id="title" errorMessage={errors?.title}>
 		<TextInput name="title" placeholder="A simple but eloquent title for the page"	bind:value={title} autocomplete="off"	class={errors?.title ? 'error' : ''} oninput={onTitleInput} />

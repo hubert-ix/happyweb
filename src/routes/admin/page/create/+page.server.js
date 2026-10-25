@@ -21,8 +21,15 @@ export const actions = {
 		let { count } = await locals.supabase.from('page').select('*', { count: 'exact', head: true }).eq('parent_id', 0);
 		values.display_order = count;
 		// insert the new page
-		let { data: page } = await locals.supabase.from('page').insert(values).select('id').maybeSingle();
-		console.log(page)
+		let { data: page, error } = await locals.supabase.from('page').insert(values).select('id').maybeSingle();
+		if (error) {
+			// 23505 = unique_violation: the path is already taken
+			if (error.code === '23505') {
+				return fail(400, { values, errors: { path: 'A page with this address already exists.' } });
+			}
+			console.error('Failed to create page:', error);
+			return fail(500, { values, errors: { form: 'Could not create the page. Please try again.' } });
+		}
 		// redirect
 		redirect(303, '/admin/page/' + page.id);
 	}

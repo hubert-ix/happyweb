@@ -223,8 +223,7 @@
 					<div class="chip">
 						Unpublished
 					</div>
-				{/if}
-				{#if !item.in_menu}
+				{:else if !item.in_menu}
 					<div class="chip in-menu">
 						Hidden from menu
 					</div>
