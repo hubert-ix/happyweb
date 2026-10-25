@@ -95,7 +95,7 @@
 
 	{#if page}
 		<FormItem label="Text in the top bar of the browser" id="meta_title">
-			<TextInput name="meta_title" placeholder="This is the text displayed in the top bar of the browser"	bind:value={metaTitle} autocomplete="off" />
+			<TextInput name="meta_title" bind:value={metaTitle} autocomplete="off" />
 		</FormItem>
 
 		<FormItem label="Description" id="meta_description">

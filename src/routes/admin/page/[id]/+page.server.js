@@ -1,21 +1,4 @@
 import { fail, redirect, error } from '@sveltejs/kit';
-import { validatePage } from '../pageValidation.js';
-import { getPageOptions, checkParent, nextOrder } from '../parent.server.js';
-
-export const load = async ({ locals, params }) => {
-	const [{ data: page, error: err }, pages] = await Promise.all([
-		locals.supabase.from('page').select().eq('id', params.id).maybeSingle(),
-		getPageOptions(locals.supabase)
-	]);
-	if (err && err.code !== '22P02') {
-		console.error('Failed to load page:', err);
-		error(500, 'Could not load this page.');
-	}
-	if (!page) {
-    error(404, 'Page not found.');
-  }
-	return { page, pages };
-};
 
 export const actions = {
 	default: async ({ request, locals, params, url }) => {

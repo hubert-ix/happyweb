@@ -1,14 +1,9 @@
 <script>
 	import { page } from '$app/state';
-	import PageForm from '../PageForm.svelte';
 
-	let { data, form } = $props();
+	let { data } = $props();
 </script>
 
 
-<h1>Edit “{data.page.title}”</h1>
-
-{#key data.page.id}
-	<PageForm {form} page={data.page} pages={data.pages} />
-{/key}
+Content builder
 

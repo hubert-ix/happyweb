@@ -295,7 +295,7 @@
 	.buttons {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: 1.5rem;
 	}
 
 	.buttons > * {
@@ -304,6 +304,8 @@
 
 	.path {
 		color: #999;
+		margin-right: 1rem;
+		font-size: 0.9rem;
 	}
 
 	.icon-button {
@@ -315,7 +317,7 @@
 	}
 
 	a.edit {
-		color: #848484;
+		color: #000;
 	}
 
 	.handle {
