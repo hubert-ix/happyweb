@@ -28,6 +28,10 @@
     width: 100%;
 	}
 
+	input::placeholder, textarea::placeholder {
+		color: #999;
+	}
+
 	input.error, textarea.error {
 		border-color: #dc2626;
 	}

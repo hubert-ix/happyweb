@@ -230,6 +230,9 @@
 				{/if}
       </div>
 			<div class="buttons">
+				<div class="path">
+					/{item.path}
+				</div>
 				<a href="/admin/page/{item.id}" class="edit"><Pencil size="16" /></a>
 				<button type="button" class="icon-button" aria-label="Delete {item.title}" onclick={() => openPopup(item.id)}>
 					<Trash size="18" />
@@ -297,6 +300,10 @@
 
 	.buttons > * {
 		display: flex;
+	}
+
+	.path {
+		color: #999;
 	}
 
 	.icon-button {

@@ -1,5 +1,5 @@
 import { fail, redirect, error } from '@sveltejs/kit';
-import { validatePage } from '../PageValidation.js';
+import { validatePage } from '../pageValidation.js';
 import { getPageOptions, checkParent, nextOrder } from '../parent.server.js';
 
 export const load = async ({ locals, params }) => {

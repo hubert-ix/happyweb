@@ -1,6 +1,5 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { slugify } from '#lib/slugify.js';
 	import { validatePage } from './pageValidation.js';
 	import Button from '#lib/UI/Button.svelte';
 	import FormItem from '#lib/forms/FormItem.svelte';
@@ -30,6 +29,10 @@
 	let submitting = $state(false);
 	let clientErrors = $state(null);
 	let errors = $derived(form?.errors ?? null);
+
+	function slugify(text = '') {
+  	return text.split('/').map(slugify).filter(Boolean).join('/');
+  }
 
 	function recheck(fields, values) {
 		if (!errors) return;
@@ -80,7 +83,7 @@
 	</FormItem>
 
 	<FormItem label="Page address" id="path" errorMessage={errors?.path}>
-		<TextInput name="path" placeholder="Something like 'about-us', or 'news/a-cool-news'" bind:value={path} autocomplete="off" class={errors?.path ? 'error' : ''} oninput={onPathInput}	onblur={onPathBlur}	/>
+		<TextInput name="path" placeholder="Something like 'about-us', or 'a-cool-news'" bind:value={path} autocomplete="off" class={errors?.path ? 'error' : ''} oninput={onPathInput}	onblur={onPathBlur}	/>
 	</FormItem>
 
 	<!--
