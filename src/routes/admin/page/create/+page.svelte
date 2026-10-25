@@ -1,10 +1,10 @@
 <script>
 	import PageForm from '../PageForm.svelte';
 
-	let { form } = $props();
+	let { form, data } = $props();
 </script>
 
 
 <h1>Create a new page</h1>
 
-<PageForm {form} submitLabel="Create page" submittingLabel="Creating…" />
+<PageForm {form} pages={data.pages} submitLabel="Create page" submittingLabel="Creating…" />

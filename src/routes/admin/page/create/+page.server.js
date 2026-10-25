@@ -1,11 +1,18 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { validatePage } from '../PageValidation.js';
+import { getPageOptions, checkParent, nextOrder } from '../parent.server.js';
+
+export const load = async ({ locals }) => {
+	return { pages: await getPageOptions(locals.supabase) };
+};
 
 export const actions = {
 	default: async ({ request, locals }) => {
 		let data = await request.formData();
+		// get the form values
 		let title = data.get('title');
 		let path = data.get('path');
+		let parent_id = data.get('parent_id');
 		// validate the data
 		let { values, errors } = validatePage({ title, path });
 		if (errors) {
@@ -14,8 +21,9 @@ export const actions = {
 		let { count } = await locals.supabase.from('page').select('*', { count: 'exact', head: true }).eq('parent_id', 0);
 		values.display_order = count;
 		// insert the new page
-		await locals.supabase.from('page').insert(values);
+		let { data: page } = await locals.supabase.from('page').insert(values).select('id').maybeSingle();
+		console.log(page)
 		// redirect
-		redirect(303, '/admin');
+		redirect(303, '/admin/page/' + page.id);
 	}
 };

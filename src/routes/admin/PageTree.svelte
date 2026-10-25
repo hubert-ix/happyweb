@@ -3,9 +3,12 @@
 	import { deserialize } from '$app/forms';
 	import { invalidate } from '$app/navigation';
   import { flatten, subtreeEnd, depthRange, renumber, changedRows } from './pageTree.js';
+	import Modal from '#lib/UI/Modal.svelte';
+	import Button from '#lib/UI/Button.svelte';
 	import GripVertical from '@lucide/svelte/icons/grip-vertical';
 	import File from '@lucide/svelte/icons/file';
 	import Pencil from '@lucide/svelte/icons/pencil';
+	import Trash from '@lucide/svelte/icons/trash';
 
 	let { pages } = $props();
 
@@ -22,6 +25,8 @@
 	let listEl;
 	let raf = 0;
 	let error = $state('');
+	let showDeletePopup = $state(false);
+	let selectedPageId = $state();
 
 	// What's rendered: during a drag, the dragged page and its children are
 	// replaced by a single placeholder showing where they'll land
@@ -128,6 +133,19 @@
 		save(before, items);
 	}
 
+	// Calls a named action in +page.server.js; throws if it didn't succeed
+	async function postAction(action, fields) {
+		const body = new FormData();
+		for (const [key, value] of Object.entries(fields)) body.set(key, value);
+		const response = await fetch(`?/${action}`, {
+			method: 'POST',
+			body,
+			headers: { accept: 'application/json', 'x-sveltekit-action': 'true' }
+		});
+		const result = deserialize(await response.text());
+		if (result.type !== 'success') throw new Error();
+	}
+
 	async function save(before, after) {
 		const changes = changedRows(before, after);
 		if (!changes.length) return;
@@ -149,6 +167,43 @@
 			error = "Couldn't save the new order. Please refresh the page and try again.";
 		}
 	}
+
+	function openPopup(pageId) {
+		selectedPageId = pageId;
+		showDeletePopup = true;
+	}
+
+	async function deletePage() {
+		const id = selectedPageId;
+		showDeletePopup = false;
+		const index = items.findIndex((item) => item.id === id);
+		if (index === -1) return;
+		const end = subtreeEnd(items, index);
+		const before = items;
+		// Remove the page right away. Its sub-pages move up one level, and its direct children are hidden from the menu
+		const childDepth = items[index].depth + 1;
+		items = renumber([
+			...items.slice(0, index),
+			...items.slice(index + 1, end).map((child) => ({
+				...child,
+				depth: child.depth - 1,
+				in_menu: child.depth === childDepth ? false : child.in_menu
+			})),
+			...items.slice(end)
+		]);
+		error = '';
+		try {
+			await postAction('delete', {
+				id,
+				changes: JSON.stringify(changedRows(before, items))
+			});
+			invalidate('app:menu');
+		} 
+		catch {
+			items = before;
+			error = "Couldn't delete the page. Please try again.";
+		}
+	}
 </script>
 
 
@@ -165,12 +220,22 @@
         </button>
         <a href="/admin/page/{item.id}">{item.title}</a>
 				{#if !item.published}
-					<div class="status">
+					<div class="chip">
 						Unpublished
 					</div>
 				{/if}
+				{#if !item.in_menu}
+					<div class="chip in-menu">
+						Hidden from menu
+					</div>
+				{/if}
       </div>
-			<a href="/admin/page/{item.id}"><Pencil size="16" /></a>
+			<div class="buttons">
+				<a href="/admin/page/{item.id}" class="edit"><Pencil size="16" /></a>
+				<button type="button" class="icon-button" aria-label="Delete {item.title}" onclick={() => openPopup(item.id)}>
+					<Trash size="18" />
+				</button>
+			</div>
 		</div>
 	{/each}
 </div>
@@ -183,6 +248,18 @@
 			<span class="badge">+{drag.block.length - 1}</span>
 		{/if}
 	</div>
+{/if}
+
+{#if showDeletePopup}
+  <Modal onclose={() => showDeletePopup = false}>
+    <div>
+      <p>Are you sure you want to delete this nice page?<br />This cannot be undone</p>
+      <div class="flex">
+        <Button onclick={deletePage}>Yes, delete</Button>
+        <Button class="cancel" onclick={() => showDeletePopup = false}>No, run away!</Button>
+      </div>
+    </div>
+  </Modal>
 {/if}
 
 
@@ -203,18 +280,44 @@
 		transition: margin-left 120ms ease;
 	}
 
+	.page.overlay {
+		justify-content: start;
+	}
+
   .left {
     display: flex;
 		align-items: center;
 		gap: 0.5rem;
   }
 
+	.buttons {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.buttons > * {
+		display: flex;
+	}
+
+	.icon-button {
+		padding: 0;
+		border: 0;
+		background: none;
+		color: #cd2020;
+		cursor: pointer;
+	}
+
+	a.edit {
+		color: #848484;
+	}
+
 	.handle {
 		display: flex;
 		padding: 0.25rem;
 		border: 0;
 		background: none;
-		color: #000;
+		color: #949494;
 		cursor: grab;
 		touch-action: none; /* lets touch screens drag instead of scrolling */
 	}
@@ -266,7 +369,7 @@
 		user-select: none;
 	}
 
-	.status {
+	.chip {
 		display: flex;
 		align-items: center;
 		padding: 0.25em 1em;
@@ -275,5 +378,10 @@
 		color: #5e0e92;
 		font-size: 0.75rem;
 		white-space: nowrap;
+	}
+
+	.chip.in-menu {
+		background: #ffdeb8;
+		color: #87430c;
 	}
 </style>

@@ -1,6 +1,7 @@
 <script>
 	let {
 		value = $bindable(''),
+		controlType = "input",
 		name,
 		id = name,
 		class: className = '',
@@ -10,11 +11,15 @@
 </script>
 
 
-<input {id} {name} bind:value {disabled} class={className} {...rest} />
+{#if controlType == "input"}
+	<input {id} {name} bind:value {disabled} class={className} {...rest} />
+{:else}
+	<textarea {id} {name} bind:value {disabled} class={className} {...rest}></textarea>
+{/if}
 
 
 <style>
-	input {
+	input, textarea {
 		font: inherit;
 		font-weight: 400;
 		padding: 0.5em 0.75em;
@@ -23,7 +28,7 @@
     width: 100%;
 	}
 
-	input.error {
+	input.error, textarea.error {
 		border-color: #dc2626;
 	}
 </style>

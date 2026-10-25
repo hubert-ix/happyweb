@@ -23,9 +23,9 @@
 		{#if data.user}
 			<div class="user">
 				Hello, {data.user.first_name}
-				<span>
+				<a href="/admin">
 					<FaceSlightlySmiling />
-				</span>
+				</a>
 			</div>
 		{/if}
 	</div>	
@@ -50,7 +50,7 @@
 	nav {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: 2rem;
 	}
 
 	.user {
@@ -59,7 +59,7 @@
 		gap: 0.5rem;
 	}
 
-	.user span {
+	.user a {
 		color: #f6cb4e;
 		display: flex;
 	}

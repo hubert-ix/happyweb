@@ -5,6 +5,7 @@
 		disabled = false,
 		class: className = '',
 		children,
+		...rest
 	} = $props();
 </script>
 
@@ -14,7 +15,7 @@
 		{@render children?.()}
 	</a>
 {:else}
-	<button {disabled} class="button {className}" onclick={clicked}>
+	<button {disabled} class="button {className}" onclick={clicked} {...rest}>
 		{@render children?.()}
 	</button>
 {/if}
@@ -47,5 +48,9 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 		pointer-events: none;
+	}
+
+	.button.cancel {
+		background: #999;
 	}
 </style>
