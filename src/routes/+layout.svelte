@@ -31,9 +31,7 @@
 	</div>	
 </header>
 
-<div class="container">
-	{@render children()}
-</div>
+{@render children()}
 
 
 <style>
