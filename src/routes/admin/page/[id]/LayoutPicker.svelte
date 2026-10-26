@@ -1,7 +1,13 @@
 <script>
   import { layouts } from '#lib/layouts.js';
 
-  let { value = $bindable() } = $props();
+  let { value = $bindable(), onchange } = $props();
+
+  function select(key) {
+    if (key === value) return;
+    value = key;
+    onchange?.(key);
+  }
 </script>
 
 
@@ -13,7 +19,7 @@
       aria-pressed={value === layout.key}
       title={layout.label}
       aria-label={layout.label}
-      onclick={() => value = layout.key}
+      onclick={() => select(layout.key)}
     >
       <span class="icon" style:grid-template-columns={layout.template}>
         {#each { length: layout.columns } as _}
@@ -29,7 +35,6 @@
   .layout-picker {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
   }
 
   button {

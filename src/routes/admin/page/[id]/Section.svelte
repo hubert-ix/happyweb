@@ -1,6 +1,7 @@
 <script>
   import { fade, slide } from "svelte/transition";
   import { getLayout, defaultLayout, tracks } from "#lib/layouts.js";
+  import { updateSection } from "#lib/sections.remote.js";
   import FormItem from "#lib/forms/FormItem.svelte";
   import TextInput from "#lib/forms/TextInput.svelte";
   import Modal from "#lib/UI/Modal.svelte";
@@ -23,6 +24,15 @@
     showDeletePopup = false;
     remove(section.id);
   }
+
+  async function saveLayout(key) {
+    section.layout = key;
+    await saveSectionKey('layout');
+  }
+
+  async function saveSectionKey(key) {
+    await updateSection({ id: section.id, values: { [key]: section[key] } });
+  }
 </script>
 
 
@@ -42,20 +52,22 @@
 
   {#if showSettings}
     <div class="options flex margin-bottom-medium" transition:slide>
-      <Toggle checked={section.hidden} label="Hide this section" />
-      <Toggle checked={section.center_heading} label="Center the heading" />
+      <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
+      <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
     </div>
   {/if}
 
-  <FormItem id="heading">
-    <TextInput name="heading" bind:value={section.heading} placeholder="Optional heading" />
+  <FormItem label="Heading" id="heading">
+    <TextInput name="heading" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
   </FormItem>
 
-  <FormItem id="intro">
-    <TextInput name="intro" controlType="textarea" placeholder="Optional intro text" bind:value={section.intro} />
+  <FormItem label="Intro" id="intro">
+    <TextInput name="intro" controlType="textarea" placeholder="Optional intro text" bind:value={section.intro} onFinishedTyping={() => saveSectionKey("intro")} />
   </FormItem>
 
-  <LayoutPicker bind:value={layout} />
+  <FormItem label="Layout">
+    <LayoutPicker bind:value={layout} onchange={saveLayout} />
+  </FormItem>
 
   <div class="columns" style:grid-template-columns={tracks(current)}>
     {#each columns as column, i (column.id)}

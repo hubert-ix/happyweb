@@ -1,4 +1,6 @@
 <script>
+	import { onDestroy } from 'svelte';
+
 	let {
 		value = $bindable(''),
 		controlType = "input",
@@ -6,15 +8,44 @@
 		id = name,
 		class: className = '',
 		disabled = false,
+		onFinishedTyping = undefined,
+		oninput,
+    onblur,
 		...rest
 	} = $props();
+
+	let timer = null;
+	let typingDelay = 800;
+
+  function finish() {
+    clearTimeout(timer);
+    timer = null;
+    onFinishedTyping?.(value);
+  }
+
+  function handleInput(e) {
+    oninput?.(e);
+    if (!onFinishedTyping) return;
+    clearTimeout(timer);
+    timer = setTimeout(finish, typingDelay);
+  }
+
+  function handleBlur(e) {
+    onblur?.(e);
+    if (timer) finish(); // save straight away if something is pending
+  }
+
+  // unmounting (navigation, section deleted): don't drop a pending call
+  onDestroy(() => {
+    if (timer) finish();
+  });
 </script>
 
 
 {#if controlType == "input"}
-	<input {id} {name} bind:value {disabled} class={className} {...rest} />
+	<input {id} {name} bind:value {disabled} class={className} oninput={handleInput} onblur={handleBlur} {...rest} />
 {:else}
-	<textarea {id} {name} bind:value {disabled} class={className} {...rest}></textarea>
+	<textarea {id} {name} bind:value {disabled} class={className} oninput={handleInput} onblur={handleBlur} {...rest}></textarea>
 {/if}
 
 

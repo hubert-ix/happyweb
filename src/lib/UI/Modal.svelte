@@ -1,5 +1,6 @@
 <script>
   import { fade, fly } from 'svelte/transition';
+  import X from '@lucide/svelte/icons/x';
   
   let {
     showCloseButton = false,
@@ -16,7 +17,9 @@
     {@render children?.()}
     
     {#if showCloseButton}
-      <button onclick={close} class="close"></button>
+      <button onclick={close} class="close">
+        <X />
+      </button>
     {/if}
 
   </div>
@@ -50,14 +53,6 @@
     /*overflow-y: auto;*/
   }
   
-  .modal.small {
-    padding: 2rem;
-    width: 300px;
-  }
-  
-  .modal.small .close {
-    display: none;
-  }
 
   .close {
     position: absolute;
@@ -66,9 +61,7 @@
     padding: 0;
     border: none;
     outline: none;
-    background: url(/images/icon-close-pink.png) no-repeat;
-    width: 24px;
-    height: 24px;
+    background: none;
     cursor: pointer;
   }
 </style>
