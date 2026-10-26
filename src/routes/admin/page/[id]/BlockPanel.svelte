@@ -22,7 +22,14 @@
   async function save() {
     saving = true;
     errorMessage = '';
-    await onsave($state.snapshot(draft));
+    try {
+      await onsave($state.snapshot(draft));
+    } 
+    catch (e) {
+      console.error(e);
+      errorMessage = "Your changes couldn't be saved. Try again.";
+      saving = false;
+    }
   }
 </script>
 

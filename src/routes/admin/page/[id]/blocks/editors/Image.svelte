@@ -1,6 +1,6 @@
 <script>
   import FormItem from '#lib/forms/FormItem.svelte';
-  import FileInput from '#lib/forms/fileInput.svelte';
+  import FileInput from '#lib/forms/FileInput.svelte';
   import TextInput from '#lib/forms/TextInput.svelte';
 
   let { data = $bindable() } = $props();
