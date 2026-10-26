@@ -28,13 +28,13 @@
 <style>
   .layout-picker {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     margin-bottom: 2rem;
   }
 
   button {
     padding: 0.4rem;
-    background: none;
+    background: #fff;
     border: solid 1px #ccc;
     border-radius: 0.3rem;
     cursor: pointer;

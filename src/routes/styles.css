@@ -124,6 +124,10 @@ button.bare {
   padding: 0;
 }
 
+button.delete {
+  color: var(--color-error);
+}
+
 /* margin */
 
 .margin-top-none {

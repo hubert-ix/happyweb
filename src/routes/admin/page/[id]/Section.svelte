@@ -1,6 +1,6 @@
 <script>
   import { fade, slide } from "svelte/transition";
-  import { getLayout, defaultLayout } from "#lib/layouts.js";
+  import { getLayout, defaultLayout, tracks } from "#lib/layouts.js";
   import FormItem from "#lib/forms/FormItem.svelte";
   import TextInput from "#lib/forms/TextInput.svelte";
   import Modal from "#lib/UI/Modal.svelte";
@@ -10,18 +10,14 @@
   import Move from '@lucide/svelte/icons/move';
   import Trash from '@lucide/svelte/icons/trash';
   import Column from "./Column.svelte";
-  import ColumnsLayout from "./ColumnsLayout.svelte";
+  import LayoutPicker from "./LayoutPicker.svelte";
 
   let { section, page, remove } = $props();
   let showDeletePopup = $state(false);
   let showSettings = $state(false);
   let layout = $derived(section.layout ?? defaultLayout);
   let current = $derived(getLayout(layout));
-  let visibleColumns = $derived(
-    [...section.columns]
-      .sort((a, b) => a.index - b.index)
-      .slice(0, current.columns)
-  );
+  let columns = $derived([...section.columns].sort((a, b) => a.index - b.index));
 
   function deleteSection() {
     showDeletePopup = false;
@@ -34,9 +30,14 @@
 
   <div class="toolbar flex margin-bottom-small">
     <Move />
-    <button class="bare" onclick={() => showSettings = !showSettings}>
-      <Settings />
-    </button>
+    <div class="flex">
+      <button class="bare" onclick={() => showSettings = !showSettings}>
+        <Settings />
+      </button>
+      <button class="bare delete" onclick={() => showDeletePopup = true}>
+        <Trash />
+      </button>
+    </div>
   </div>
 
   {#if showSettings}
@@ -54,18 +55,17 @@
     <TextInput name="intro" controlType="textarea" placeholder="Optional intro text" bind:value={section.intro} />
   </FormItem>
 
-  <ColumnsLayout bind:value={layout} />
+  <LayoutPicker bind:value={layout} />
 
-  <div class="columns" style:grid-template-columns={current.template}>
-    {#each visibleColumns as column (column.id)}
-      <Column {column} />
+  <div class="columns" style:grid-template-columns={tracks(current)}>
+    {#each columns as column, i (column.id)}
+      {@const hidden = i >= current.columns}
+      <div class="track" class:hidden inert={hidden}>
+        <div class="pad">
+          <Column {column} />
+        </div>
+      </div>
     {/each}
-  </div>
-
-  <div class="footer flex">
-    <button class="bare delete" onclick={() => showDeletePopup = true}>
-      <Trash />
-    </button>
   </div>
 
 </div>
@@ -84,8 +84,9 @@
 <style>
   .section {
     border: solid 1px #ccc;
+    background: #f9f9f9;
     border-radius: 0.5rem;
-    padding: 1rem;
+    padding: 1rem 1rem 2rem;
     margin-bottom: 2rem;
     overflow: hidden;
   }
@@ -96,14 +97,20 @@
 
   .columns {
     display: grid;
-    gap: 2rem;
+    margin-inline: -1rem;
+    transition: grid-template-columns 0.4s ease;
   }
 
-  .footer {
-    justify-content: end;
+  .track {
+    overflow: hidden;
+    transition: opacity 0.3s ease;
   }
 
-  button.delete {
-    color: var(--color-error);
+  .track.hidden {
+    opacity: 0;
+  }
+
+  .pad {
+    padding-inline: 1rem;   /* replaces gap: 2rem */
   }
 </style>

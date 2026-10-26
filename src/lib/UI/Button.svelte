@@ -57,4 +57,8 @@
 	.button.delete {
 		background: var(--color-error);
 	}
+
+	button.columns {
+		background-color: #719dd1;
+	}
 </style>

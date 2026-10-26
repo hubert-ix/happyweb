@@ -12,3 +12,10 @@ export const defaultLayout = '2-50-50';
 export function getLayout(key) {
 	return layouts.find((l) => l.key === key) ?? layouts.find((l) => l.key === defaultLayout);
 }
+
+// always 4 tracks, hidden ones at 0fr, so layout changes can be animated
+export function tracks(layout) {
+	const sizes = layout.template.split(' ');
+	while (sizes.length < 4) sizes.push('0fr');
+	return sizes.map((s) => `minmax(0, ${s})`).join(' ');
+}
