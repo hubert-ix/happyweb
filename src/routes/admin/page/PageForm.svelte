@@ -7,7 +7,6 @@
 	import TextInput from '#lib/forms/TextInput.svelte';
 	import Toggle from '#lib/UI/Toggle.svelte';
 	import ParentSelect from './ParentSelect.svelte';
-  import PageContent from './PageContent.svelte';
 
 	let {
 		form = undefined,

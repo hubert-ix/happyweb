@@ -53,4 +53,8 @@
 	.button.cancel {
 		background: #999;
 	}
+
+	.button.delete {
+		background: var(--color-error);
+	}
 </style>

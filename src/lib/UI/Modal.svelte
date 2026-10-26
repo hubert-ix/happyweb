@@ -1,30 +1,22 @@
 <script>
-  import { preventDefault } from 'svelte/legacy';
   import { fade, fly } from 'svelte/transition';
   
   let {
-    title = null,
-    style = "",
     showCloseButton = false,
     children,
-    close,
-    show
+    close = undefined
   } = $props();
 </script>
 
 
-<div class="modal-backdrop" transition:fade onintroend={show}>
+<div class="modal-backdrop" transition:fade|global>
 
-  <div class="modal {style}" transition:fly={{y: 300}}>
+  <div class="modal" transition:fly|global={{y: 300}}>
   
-    {#if title}
-      <h1>{title}</h1>
-    {/if}
-    
     {@render children?.()}
     
     {#if showCloseButton}
-      <button onclick={preventDefault(close)} class="close"></button>
+      <button onclick={close} class="close"></button>
     {/if}
 
   </div>

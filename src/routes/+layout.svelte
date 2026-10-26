@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import FaceSlightlySmiling from '@lucide/svelte/icons/face-slightly-smiling';
+	import Settings from '@lucide/svelte/icons/settings';
   import './styles.css';
 
 	let { data, children } = $props();
@@ -23,7 +24,7 @@
 			<div class="user">
 				Hello, {data.user.first_name}
 				<a href="/admin">
-					<FaceSlightlySmiling />
+					<Settings />
 				</a>
 			</div>
 		{/if}
@@ -56,11 +57,10 @@
 	.user {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 1rem;
 	}
 
 	.user a {
-		color: #f6cb4e;
 		display: flex;
 	}
 </style>

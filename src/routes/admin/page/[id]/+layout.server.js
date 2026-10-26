@@ -1,7 +1,8 @@
 import { fail, redirect, error } from '@sveltejs/kit';
 
-export const load = async ({ locals, params }) => {
-  const { data: page, error: err } = await locals.supabase.from('page').select().eq('id', params.id).maybeSingle();
+export const load = async ({ locals, params, depends }) => {
+  depends("page");
+  const { data: page, error: err } = await locals.supabase.from('page').select('*, sections:section(*, columns:column(*))').eq('id', params.id).maybeSingle();
   if (err && err.code !== '22P02') {
     console.error('Failed to load page:', err);
     error(500, 'Could not load this page.');

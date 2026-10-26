@@ -3,6 +3,7 @@
 	--font-heading: 'Roboto', sans-serif;
   
   --color-text: #000;
+  --color-error: #cd2020;
 
   --margin-xxsmall: 0.5rem;
   --margin-xsmall: 1rem;
@@ -56,6 +57,7 @@ body {
 }
 
 /* headings */
+
 h1,
 h2,
 h3,
@@ -94,7 +96,6 @@ a {
   border-radius: 0.5rem;
   color: #8a3dae; 
   padding: 1rem 1rem 1rem 2.5rem; 
-  max-width: 800px; 
   position: relative; 
   overflow: hidden; 
 }

@@ -9,6 +9,7 @@
 	import File from '@lucide/svelte/icons/file';
 	import Pencil from '@lucide/svelte/icons/pencil';
 	import Trash from '@lucide/svelte/icons/trash';
+	import Eye from '@lucide/svelte/icons/eye';
 
 	let { pages } = $props();
 
@@ -233,9 +234,14 @@
 				<div class="path">
 					/{item.path}
 				</div>
-				<a href="/admin/page/{item.id}" class="edit"><Pencil size="16" /></a>
+				<a href={item.path} class="view">
+					<Eye size="18" />
+				</a>
+				<a href="/admin/page/{item.id}" class="edit">
+					<Pencil size="18" />
+				</a>
 				<button type="button" class="icon-button" aria-label="Delete {item.title}" onclick={() => openPopup(item.id)}>
-					<Trash size="18" />
+					<Trash size="18"  />
 				</button>
 			</div>
 		</div>
@@ -257,7 +263,7 @@
     <div>
       <p>Are you sure you want to delete this nice page?<br />This cannot be undone</p>
       <div class="flex">
-        <Button onclick={deletePage}>Yes, delete</Button>
+        <Button class="delete" onclick={deletePage}>Yes, delete</Button>
         <Button class="cancel" onclick={() => showDeletePopup = false}>No, run away!</Button>
       </div>
     </div>
@@ -312,12 +318,16 @@
 		padding: 0;
 		border: 0;
 		background: none;
-		color: #cd2020;
+		color: var(--color-error);
 		cursor: pointer;
 	}
 
 	a.edit {
 		color: #000;
+	}
+
+	a.view {
+		color: #0e8112;
 	}
 
 	.handle {

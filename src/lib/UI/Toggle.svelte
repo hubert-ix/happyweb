@@ -72,7 +72,7 @@
 	}
 
 	input:checked + .track {
-		background: #f781d1;
+		background: #349500;
 	}
 
 	input:checked + .track .thumb {

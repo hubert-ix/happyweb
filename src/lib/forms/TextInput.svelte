@@ -26,6 +26,7 @@
 		border: 1px solid #cbd5e1;
 		border-radius: 6px;
     width: 100%;
+		color: #555;
 	}
 
 	input::placeholder, textarea::placeholder {

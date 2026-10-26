@@ -16,7 +16,6 @@
 <style>
 	.tabs {
 		display: flex;
-		gap: 0.25rem;
 		border-bottom: 1px solid #e2e8f0;
 	}
 

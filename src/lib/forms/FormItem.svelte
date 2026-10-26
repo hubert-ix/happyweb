@@ -35,7 +35,7 @@
 
   label {
 		display: block;
-    color: #555;
+    color: #000;
 	}
 
   .description {
