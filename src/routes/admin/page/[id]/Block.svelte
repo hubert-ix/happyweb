@@ -1,18 +1,29 @@
 <script>
   import { fade, slide } from "svelte/transition";
   import { dragHandle } from 'svelte-dnd-action';
+  import { updateBlock } from '#lib/blocks.remote.js';
+  import { blockTypes } from './blocks/index.js';
   import Modal from "#lib/UI/Modal.svelte";
   import Button from "#lib/UI/Button.svelte";
+  import BlockPanel from './BlockPanel.svelte';
   import Pencil from '@lucide/svelte/icons/pencil';
   import Move from '@lucide/svelte/icons/move';
   import Trash from '@lucide/svelte/icons/trash';
 
-  let { block, onremove } = $props();
+  let { block, onremove, onupdate } = $props();
+  let type = $derived(blockTypes[block.type]);
+  let editing = $state(false);
   let showDeletePopup = $state(false);
 
   function deleteBlock() {
     showDeletePopup = false;
     onremove(block.id);
+  }
+
+  async function saveBlock(data) {
+    await updateBlock({ id: block.id, values: { data } });
+    onupdate({ ...block, data });
+    editing = false;
   }
 </script>
 
@@ -24,18 +35,27 @@
       <Move size="18" />
     </div>
     <div class="flex">
-      <button class="bare">
-        <Pencil size="18" />
-      </button>
+      <div class="type">
+        {block.type}
+      </div>
+      {#if block.type != "navigation"}
+        <button class="bare" onclick={() => editing = true}>
+          <Pencil size="18" />
+        </button>
+      {/if}
       <button class="bare delete" onclick={() => showDeletePopup = true}>
         <Trash size="18" />
       </button>
     </div>
   </div>
 
-  {block.type}
+  <type.Preview data={block.data ?? {}} />
 
 </div>
+
+{#if editing}
+  <BlockPanel {block} onsave={saveBlock} onclose={() => editing = false} />
+{/if}
 
 {#if showDeletePopup}
   <Modal>
@@ -65,5 +85,16 @@
   .handle {
     cursor: grab;
     display: flex;
+  }
+
+  .type {
+    display: flex;
+		align-items: center;
+		padding: 0.25em 1em;
+		border-radius: 999px;
+		background: #f9d6ff;
+		color: #5e0e92;
+		font-size: 0.75rem;
+		white-space: nowrap;
   }
 </style>

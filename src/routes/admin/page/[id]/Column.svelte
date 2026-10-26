@@ -38,6 +38,10 @@
 		await invalidate("page");
   }
 
+  function replaceBlock(updatedBlock) {
+    blocks = blocks.map((b) => (b.id === updatedBlock.id ? updatedBlock : b));
+  }
+
   // while dragging: let the library rearrange the list live
   function handleConsider(e) {
     blocks = e.detail.items;
@@ -75,7 +79,7 @@
         {#if block[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
           <div class="placeholder"></div>
         {:else}
-          <Block {block} onremove={removeBlock} />
+          <Block {block} onremove={removeBlock} onupdate={replaceBlock} />
         {/if}
       </div>
     {/each}
@@ -120,7 +124,7 @@
     text-align: left;
     text-decoration: underline;
     text-underline-position: under;
-    color: #337a13;
+    color: #13587a;
   }
 
   .blocks {
