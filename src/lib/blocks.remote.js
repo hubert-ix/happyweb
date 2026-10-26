@@ -42,3 +42,17 @@ export const deleteBlock = command('unchecked', async (id) => {
 	if (deleteError) throw deleteError;
 	return {};
 });
+
+// REORDER: blockIds in their new order inside columnId
+export const reorderBlocks = command('unchecked', async ({ columnId, blockIds }) => {
+	const { locals } = getRequestEvent();
+	if (!Array.isArray(blockIds)) error(400, 'Invalid block list');
+	const results = await Promise.all(
+		blockIds.map((id, index) =>
+			locals.supabase.from('block').update({ column_id: columnId, index }).eq('id', id)
+		)
+	);
+	const failed = results.find((r) => r.error);
+	if (failed) throw failed.error;
+	return {};
+});

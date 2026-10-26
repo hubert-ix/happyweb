@@ -23,6 +23,7 @@
 	"dependencies": {
 		"@lucide/svelte": "^1.61.0",
 		"@supabase/ssr": "^0.12.7",
-		"@supabase/supabase-js": "^2.118.0"
+		"@supabase/supabase-js": "^2.118.0",
+		"svelte-dnd-action": "^0.9.80"
 	}
 }

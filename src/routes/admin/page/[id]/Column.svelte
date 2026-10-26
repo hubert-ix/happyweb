@@ -1,7 +1,9 @@
 <script>
   import { invalidate } from '$app/navigation';
   import { slide } from "svelte/transition";
-  import { addBlock, deleteBlock } from "#lib/blocks.remote.js";
+  import { flip } from 'svelte/animate';
+  import { dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
+  import { addBlock, deleteBlock, reorderBlocks } from "#lib/blocks.remote.js";
   import Button from "#lib/UI/Button.svelte";
   import Modal from "#lib/UI/Modal.svelte";
   import CirclePlus from '@lucide/svelte/icons/circle-plus';
@@ -12,6 +14,7 @@
   let adding = $state(false);
   let showCreatePopup = $state(false);
   let blocks = $derived(column.blocks ?? []);
+  const flipDurationMs = 200;
 
   async function createBlock(type) {
     showCreatePopup = false;
@@ -34,14 +37,49 @@
 		await deleteBlock(blockId);
 		await invalidate("page");
   }
+
+  // while dragging: let the library rearrange the list live
+  function handleConsider(e) {
+    blocks = e.detail.items;
+  }
+
+  // on drop: fires in both the source and the target column, each saves its own order
+  async function handleFinalize(e) {
+    blocks = e.detail.items;
+    try {
+      await reorderBlocks({ columnId: column.id, blockIds: blocks.map((b) => b.id) });
+    } 
+    catch (err) {
+      console.error(err);
+      alert('Sorry, the new order could not be saved.');
+      invalidate('page');
+    }
+  }
 </script>
 
 
 <div class="column">
 
-  {#each blocks as block (block.id)}
-    <Block {block} onremove={removeBlock} />
-  {/each}
+  <div class="blocks"
+    use:dragHandleZone={{
+      items: blocks,
+      type: `section-${column.section_id}`,   // only columns of the same section
+      flipDurationMs,
+      dropTargetStyle: {}
+    }}
+    onconsider={handleConsider}
+    onfinalize={handleFinalize}
+  >
+    {#each blocks as block (block.id)}
+      <div animate:flip={{ duration: flipDurationMs }}>
+        {#if block[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+          <div class="placeholder"></div>
+        {:else}
+          <Block {block} onremove={removeBlock} />
+        {/if}
+      </div>
+    {/each}
+  </div>
   
   <Button class="columns" disabled={adding} onclick={() => showCreatePopup = true}>
 		<CirclePlus /> 
@@ -72,12 +110,6 @@
     position: relative;
   }
 
-  .footer {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-  }
-
   .add-block-buttons {
     display: grid;
     grid-template-columns: 1fr;
@@ -89,5 +121,17 @@
     text-decoration: underline;
     text-underline-position: under;
     color: #337a13;
+  }
+
+  .blocks {
+    min-height: 4rem;
+  }
+
+  .placeholder {
+    height: 4rem;
+    margin-bottom: 1rem;
+    border: dashed 2px #e36f6f;
+    border-radius: 0.3rem;
+    background: rgb(227 111 111 / 0.06);
   }
 </style>

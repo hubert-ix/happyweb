@@ -1,5 +1,6 @@
 <script>
   import { fade, slide } from "svelte/transition";
+  import { dragHandle } from 'svelte-dnd-action';
   import Modal from "#lib/UI/Modal.svelte";
   import Button from "#lib/UI/Button.svelte";
   import Pencil from '@lucide/svelte/icons/pencil';
@@ -16,10 +17,12 @@
 </script>
 
 
-<div class="block" transition:slide>
+<div class="block">
   
   <div class="toolbar flex margin-bottom-small">
-    <Move size="18" />
+    <div class="handle" use:dragHandle aria-label="Drag to move this block">
+      <Move size="18" />
+    </div>
     <div class="flex">
       <button class="bare">
         <Pencil size="18" />
@@ -57,5 +60,10 @@
 
   .toolbar {
     justify-content: space-between;
+  }
+
+  .handle {
+    cursor: grab;
+    display: flex;
   }
 </style>
