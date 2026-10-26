@@ -43,10 +43,15 @@
     border: solid 1px #ccc;
     border-radius: 0.3rem;
     cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   }
 
   button.active {
     border-color: #e36f6f;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
   }
 
   .icon {

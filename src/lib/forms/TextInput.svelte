@@ -1,5 +1,8 @@
 <script>
 	import { onDestroy } from 'svelte';
+  import { fade } from 'svelte/transition';
+  import Check from '@lucide/svelte/icons/check';
+  import CircleAlert from '@lucide/svelte/icons/circle-alert';
 
 	let {
 		value = $bindable(''),
@@ -16,16 +19,37 @@
 
 	let timer = null;
 	let typingDelay = 800;
+	let status = $state('idle'); // 'idle' | 'saved' | 'error'
+  let statusTimer = null;
+  let saveId = 0;
 
-  function finish() {
+  async function finish() {
     clearTimeout(timer);
     timer = null;
-    onFinishedTyping?.(value);
+    if (!onFinishedTyping) return;
+    const id = ++saveId;
+    try {
+      await onFinishedTyping(value);
+      if (id !== saveId) return; // a newer save has started, let it report
+      showStatus('saved', 1500);
+    } 
+		catch (e) {
+      if (id !== saveId) return;
+      console.error(e);
+      showStatus('error', 4000);
+    }
+  }
+
+	function showStatus(s, duration) {
+    clearTimeout(statusTimer);
+    status = s;
+    statusTimer = setTimeout(() => (status = 'idle'), duration);
   }
 
   function handleInput(e) {
     oninput?.(e);
     if (!onFinishedTyping) return;
+    status = 'idle'; // hide the old tick as soon as they type again
     clearTimeout(timer);
     timer = setTimeout(finish, typingDelay);
   }
@@ -35,21 +59,37 @@
     if (timer) finish(); // save straight away if something is pending
   }
 
-  // unmounting (navigation, section deleted): don't drop a pending call
   onDestroy(() => {
+    clearTimeout(statusTimer);
     if (timer) finish();
   });
 </script>
 
 
-{#if controlType == "input"}
-	<input {id} {name} bind:value {disabled} class={className} oninput={handleInput} onblur={handleBlur} {...rest} />
-{:else}
-	<textarea {id} {name} bind:value {disabled} class={className} oninput={handleInput} onblur={handleBlur} {...rest}></textarea>
-{/if}
+<div class="field" class:textarea={controlType === 'textarea'}>
+	{#if controlType == "input"}
+		<input {id} {name} bind:value {disabled} class={className} oninput={handleInput} onblur={handleBlur} {...rest} />
+	{:else}
+		<textarea {id} {name} bind:value {disabled} class={className} oninput={handleInput} onblur={handleBlur} {...rest}></textarea>
+	{/if}
+
+	{#if status === 'saved'}
+    <span class="status saved" transition:fade={{ duration: 200 }} title="Saved">
+      <Check />
+    </span>
+  {:else if status === 'error'}
+    <span class="status error" transition:fade={{ duration: 200 }} title="Could not save">
+      <CircleAlert />
+    </span>
+  {/if}
+</div>
 
 
 <style>
+	.field {
+    position: relative;
+  }
+
 	input, textarea {
 		font: inherit;
 		font-weight: 400;
@@ -67,4 +107,22 @@
 	input.error, textarea.error {
 		border-color: #dc2626;
 	}
+
+	.status {
+    position: absolute;
+    right: 0.6rem;
+    top: 50%;
+    translate: 0 -50%;
+    display: flex;
+    pointer-events: none;
+  }
+
+  /* textareas: pin to the top-right corner instead of centring */
+  .field.textarea .status {
+    top: 0.6rem;
+    translate: none;
+  }
+
+  .saved { color: #349500; }
+  .error { color: var(--color-error); }
 </style>

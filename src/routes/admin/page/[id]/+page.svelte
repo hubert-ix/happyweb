@@ -35,7 +35,7 @@
 </div>
 
 {#each sections as section (section.id)}
-	<Section page={data.page} {section} remove={removeSection} />
+	<Section page={data.page} {section} onremove={removeSection} />
 {/each}
 
 <div class="margin-bottom-medium">

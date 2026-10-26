@@ -4,10 +4,11 @@ export const load = async ({ locals, params, depends }) => {
   depends("page");
   const { data: page, error: err } = await locals.supabase
     .from('page')
-    .select('*, sections:section(*, columns:column(*))')
+    .select('*, sections:section(*, columns:column(*, blocks:block(*)))')
     .eq('id', params.id)
     .order('index', { referencedTable: 'sections' })
     .order('index', { referencedTable: 'sections.columns' })
+    .order('index', { referencedTable: 'sections.columns.blocks' })
     .maybeSingle();
   if (err && err.code !== '22P02') {
     console.error('Failed to load page:', err);

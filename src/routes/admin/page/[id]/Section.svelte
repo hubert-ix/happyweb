@@ -13,7 +13,7 @@
   import Column from "./Column.svelte";
   import LayoutPicker from "./LayoutPicker.svelte";
 
-  let { section, page, remove } = $props();
+  let { section, page, onremove } = $props();
   let showDeletePopup = $state(false);
   let showSettings = $state(false);
   let layout = $derived(section.layout ?? defaultLayout);
@@ -22,7 +22,7 @@
 
   function deleteSection() {
     showDeletePopup = false;
-    remove(section.id);
+    onremove(section.id);
   }
 
   async function saveLayout(key) {
