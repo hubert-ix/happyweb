@@ -7,6 +7,10 @@
   <div class="preview">
     {data.text}
   </div>
+{:else}
+  <div class="empty">
+    No text has been entered yet
+  </div>
 {/if}
 
 
@@ -14,5 +18,10 @@
   .preview {
     margin: 0;
     white-space: pre-line;
+  }
+
+  .empty {
+    font-style: italic;
+    opacity: 0.6;
   }
 </style>

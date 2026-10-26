@@ -75,7 +75,6 @@
     padding: 1rem;
     margin-bottom: 1rem;
     background: #fafafa;
-    text-transform: capitalize;
   }
 
   .toolbar {
@@ -91,7 +90,7 @@
     display: flex;
 		align-items: center;
 		padding: 0.25em 1em;
-		border-radius: 999px;
+		border-radius: 0.25rem;
 		background: #f9d6ff;
 		color: #5e0e92;
 		font-size: 0.75rem;

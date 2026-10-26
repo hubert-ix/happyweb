@@ -6,16 +6,19 @@ import NavigationPreview from './preview/Navigation.svelte';
 
 export const blockTypes = {
 	text: {
+    label: 'Some text',
 		defaults: { text: '' },
 		Editor: TextEditor,
 		Preview: TextPreview
 	},
 	image: {
-		defaults: { path: '', alt: '' },
+    label: 'A nice image',
+		defaults: { url: '', alt: '' },
     Editor: ImageEditor,
 		Preview: ImagePreview
 	},
   navigation: {
+    label: 'A navigation block',
 		defaults: { },
     Editor: null,
 		Preview: NavigationPreview

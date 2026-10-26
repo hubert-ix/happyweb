@@ -4,6 +4,7 @@
   import { flip } from 'svelte/animate';
   import { dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
   import { addBlock, deleteBlock, reorderBlocks } from "#lib/blocks.remote.js";
+  import { blockTypes } from './blocks/index.js';
   import Button from "#lib/UI/Button.svelte";
   import Modal from "#lib/UI/Modal.svelte";
   import CirclePlus from '@lucide/svelte/icons/circle-plus';
@@ -96,9 +97,9 @@
   <Modal showCloseButton={true} close={() => showCreatePopup = false}>
     <h3>What kind of content shall we add?</h3>
     <div class="add-block-buttons">
-      <button class="bare" onclick={() => createBlock("text")}>Some text</button>
-      <button class="bare" onclick={() => createBlock("image")}>An image</button>
-      <button class="bare" onclick={() => createBlock("navigation")}>A navigation block</button>
+      {#each Object.entries(blockTypes) as [key, type]}
+        <button class="bare" onclick={() => createBlock(key)}>{type.label}</button>
+      {/each}
     </div>
   </Modal>
 {/if}
