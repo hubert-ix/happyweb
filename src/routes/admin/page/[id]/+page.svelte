@@ -34,13 +34,13 @@
 	Then each column has some content inside it.
 </div>
 
+{#each sections as section (section.id)}
+	<Section page={data.page} {section} remove={removeSection} />
+{/each}
+
 <div class="margin-bottom-medium">
 	<Button onclick={createSection} disabled={adding}>
 		<CirclePlus />
 		{adding ? "Adding..." : "Add a new section"}
 	</Button>
 </div>
-
-{#each sections as section (section.id)}
-	<Section page={data.page} {section} remove={removeSection} />
-{/each}

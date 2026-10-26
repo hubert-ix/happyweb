@@ -1,10 +1,11 @@
 <script>
-  import { fade } from "svelte/transition";
+  import { fade, slide } from "svelte/transition";
   import { getLayout, defaultLayout } from "#lib/layouts.js";
   import FormItem from "#lib/forms/FormItem.svelte";
   import TextInput from "#lib/forms/TextInput.svelte";
   import Modal from "#lib/UI/Modal.svelte";
   import Button from "#lib/UI/Button.svelte";
+  import Toggle from "#lib/UI/Toggle.svelte";
   import Settings from '@lucide/svelte/icons/settings';
   import Move from '@lucide/svelte/icons/move';
   import Trash from '@lucide/svelte/icons/trash';
@@ -13,6 +14,7 @@
 
   let { section, page, remove } = $props();
   let showDeletePopup = $state(false);
+  let showSettings = $state(false);
   let layout = $derived(section.layout ?? defaultLayout);
   let current = $derived(getLayout(layout));
   let visibleColumns = $derived(
@@ -32,11 +34,20 @@
 
   <div class="toolbar flex margin-bottom-small">
     <Move />
-    <Settings />
+    <button class="bare" onclick={() => showSettings = !showSettings}>
+      <Settings />
+    </button>
   </div>
 
+  {#if showSettings}
+    <div class="options flex margin-bottom-medium" transition:slide>
+      <Toggle checked={section.hidden} label="Hide this section" />
+      <Toggle checked={section.center_heading} label="Center the heading" />
+    </div>
+  {/if}
+
   <FormItem id="heading">
-    <TextInput name="heading" bind:value={section.heading} placeholder="You can include an optional heading for the section" />
+    <TextInput name="heading" bind:value={section.heading} placeholder="Optional heading" />
   </FormItem>
 
   <FormItem id="intro">
@@ -52,7 +63,7 @@
   </div>
 
   <div class="footer flex">
-    <button onclick={() => showDeletePopup = true}>
+    <button class="bare delete" onclick={() => showDeletePopup = true}>
       <Trash />
     </button>
   </div>
@@ -81,7 +92,6 @@
 
   .toolbar {
     justify-content: space-between;
-    color: #999
   }
 
   .columns {
@@ -93,11 +103,7 @@
     justify-content: end;
   }
 
-  button {
-    padding: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
+  button.delete {
     color: var(--color-error);
   }
 </style>

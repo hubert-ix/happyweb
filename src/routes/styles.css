@@ -116,7 +116,7 @@ a {
   gap: 1rem;
 }
 
-button.edit-page {
+button.bare {
   background: none;
   border: none;
   cursor: pointer;

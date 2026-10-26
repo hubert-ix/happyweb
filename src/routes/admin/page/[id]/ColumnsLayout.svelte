@@ -29,7 +29,7 @@
   .layout-picker {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   button {
@@ -41,7 +41,7 @@
   }
 
   button.active {
-    border-color: var(--color-primary, #bd8add);
+    border-color: #e36f6f;
   }
 
   .icon {
@@ -57,6 +57,6 @@
   }
 
   button.active .icon span {
-    background: var(--color-primary, #bd8add);
+    background: #e36f6f;
   }
 </style>
