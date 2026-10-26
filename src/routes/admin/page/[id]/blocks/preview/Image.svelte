@@ -5,7 +5,7 @@
 
 {#if data.url}
   <div class="preview">
-    {data.url}
+    <img src={data.url} alt={data.alt} />
   </div>
 {:else}
   <div class="empty">
@@ -18,6 +18,10 @@
   .preview {
     margin: 0;
     white-space: pre-line;
+  }
+
+  .preview img {
+    max-width: 100%;
   }
 
   .empty {

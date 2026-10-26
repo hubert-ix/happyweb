@@ -76,7 +76,7 @@
     width: min(800px, 100%);
     height: 100dvh;
     background: #fff;
-    box-shadow: -4px 0 16px rgb(0 0 0 / 0.15);
+    box-shadow: 4px 0 16px rgb(0 0 0 / 0.15);
     z-index: 21;
     display: flex;
     flex-direction: column;

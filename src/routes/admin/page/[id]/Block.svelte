@@ -38,7 +38,7 @@
       <div class="type">
         {block.type}
       </div>
-      {#if block.type != "navigation"}
+      {#if type?.Editor}
         <button class="bare" onclick={() => editing = true}>
           <Pencil size="18" />
         </button>
@@ -49,7 +49,9 @@
     </div>
   </div>
 
-  <type.Preview data={block.data ?? {}} />
+  {#if type}
+    <type.Preview data={block.data ?? {}} />
+  {/if}
 
 </div>
 
