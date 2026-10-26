@@ -1,6 +1,6 @@
 <script>
   import { fade } from 'svelte/transition';
-  import { getUploadUrl } from '#lib/files.remote.js';
+  import { getUploadUrl, deleteFile } from '#lib/files.remote.js';
   import Upload from '@lucide/svelte/icons/upload';
   import X from '@lucide/svelte/icons/x';
 
@@ -12,11 +12,12 @@
     id = name,
     onuploaded = undefined
   } = $props();
-
   let progress = $state(0);  // 0–100
   let uploading = $state(false);
   let errorMessage = $state('');
   let isImage = $derived(accept.startsWith('image'));
+
+  const uploadedHere = new Set();
 
   // XMLHttpRequest rather than fetch, because only XHR reports upload progress
   function put(url, file) {
@@ -48,6 +49,7 @@
       const { signedUrl, publicUrl } = await getUploadUrl({ folder, filename: file.name });
       await put(signedUrl, file);
       value = publicUrl;
+      uploadedHere.add(publicUrl);
       onuploaded?.(publicUrl);
     } 
     catch (err) {
@@ -56,6 +58,20 @@
     } 
     finally {
       uploading = false;
+    }
+  }
+
+  async function remove() {
+    const url = value;
+    value = '';
+    errorMessage = '';
+    if (!uploadedHere.has(url)) return;   // a saved file: leave it, Save will handle it
+    uploadedHere.delete(url);
+    try {
+      await deleteFile(url);
+    }
+    catch (err) {
+      console.error(err);
     }
   }
 </script>
@@ -70,7 +86,7 @@
       {:else}
         <a href={value} target="_blank" rel="noopener">{value.split('/').pop()}</a>
       {/if}
-      <button type="button" class="bare remove" onclick={() => (value = '')} aria-label="Remove file">
+      <button type="button" class="bare remove" onclick={remove} aria-label="Remove file">
         <X size="18" />
       </button>
     </div>
