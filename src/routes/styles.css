@@ -95,6 +95,12 @@ a {
 
 /* misc */
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .help {
   background: #f5e9fa; 
   border: solid 1px #c18adb;

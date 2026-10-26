@@ -7,7 +7,7 @@ export const layouts = [
 	{ key: '4', columns: 4, template: '1fr 1fr 1fr 1fr', label: 'Four columns' }
 ];
 
-export const defaultLayout = '2-50-50';
+export const defaultLayout = '2-equal';
 
 export function getLayout(key) {
 	return layouts.find((l) => l.key === key) ?? layouts.find((l) => l.key === defaultLayout);
