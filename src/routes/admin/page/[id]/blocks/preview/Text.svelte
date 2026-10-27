@@ -5,7 +5,7 @@
 
 {#if data.text}
   <div class="preview">
-    {data.text}
+    {@html data.text}
   </div>
 {:else}
   <div class="empty">
