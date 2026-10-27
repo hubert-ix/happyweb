@@ -1,5 +1,6 @@
 <script>
   import { fade, slide } from "svelte/transition";
+  import { onMount } from 'svelte';
   import { dragHandle } from 'svelte-dnd-action';
   import { updateBlock } from '#lib/blocks.remote.js';
   import { blockTypes } from './blocks/index.js';
@@ -10,10 +11,15 @@
   import Move from '@lucide/svelte/icons/move';
   import Trash from '@lucide/svelte/icons/trash';
 
-  let { block, onremove, onupdate } = $props();
+  let { block, onremove, onupdate, autoEdit = false, onautoedited } = $props();
   let type = $derived(blockTypes[block.type]);
   let editing = $state(false);
   let showDeletePopup = $state(false);
+
+  onMount(() => {
+    if (autoEdit && type?.Editor) editing = true;
+    onautoedited?.();
+  });
 
   function deleteBlock() {
     showDeletePopup = false;
@@ -31,7 +37,7 @@
 <div class="block">
   
   <div class="toolbar flex margin-bottom-small">
-    <div class="handle" use:dragHandle aria-label="Drag to move this block">
+    <div class="handle" data-tip="Move this block" use:dragHandle aria-label="Drag to move this block">
       <Move size="18" />
     </div>
     <div class="flex">
@@ -39,11 +45,11 @@
         {block.type}
       </div>
       {#if type?.Editor}
-        <button class="bare" onclick={() => editing = true}>
+        <button class="bare" data-tip="Edit this block" onclick={() => editing = true}>
           <Pencil size="18" />
         </button>
       {/if}
-      <button class="bare delete" onclick={() => showDeletePopup = true}>
+      <button class="bare delete" data-tip="Delete this block" onclick={() => showDeletePopup = true}>
         <Trash size="18" />
       </button>
     </div>

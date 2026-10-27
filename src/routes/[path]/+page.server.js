@@ -44,6 +44,7 @@ async function getPages(supabase, parentId) {
     .select('id, title, path')
     .eq('parent_id', parentId)
     .eq('published', true)
+    .eq('in_menu', true)
     .order('display_order');
   if (error) console.error(error);
   return data ?? [];
@@ -56,6 +57,7 @@ async function getPage(supabase, id) {
     .select('id, title, path')
     .eq('id', id)
     .eq('published', true)
+    .eq('in_menu', true)
     .maybeSingle();
   if (error) console.error(error);
   return data;

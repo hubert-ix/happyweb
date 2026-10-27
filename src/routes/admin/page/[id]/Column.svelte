@@ -14,6 +14,7 @@
   let { column } = $props();
   let adding = $state(false);
   let showCreatePopup = $state(false);
+  let justAddedBlockId = $state(null);
   let blocks = $derived(column.blocks ?? []);
   const flipDurationMs = 200;
 
@@ -22,6 +23,7 @@
     adding = true;
     try {
       const { block } = await addBlock({ columnId: column.id, type });
+      justAddedBlockId = block.id;
       blocks = [...blocks, block];
     } 
     catch (e) {
@@ -80,7 +82,13 @@
         {#if block[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
           <div class="placeholder"></div>
         {:else}
-          <Block {block} onremove={removeBlock} onupdate={replaceBlock} />
+          <Block 
+            {block} 
+            onremove={removeBlock} 
+            onupdate={replaceBlock} 
+            autoEdit={block.id === justAddedBlockId}
+            onautoedited={() => justAddedBlockId = null}
+          />
         {/if}
       </div>
     {/each}

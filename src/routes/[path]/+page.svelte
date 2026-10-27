@@ -11,7 +11,7 @@
 
 {#if data.user}
   <div class="container edit-page">
-    <button class="bare" onclick={() => goto('/admin/page/' + data.page?.id + '?returnURL=/' + data.page.path)}>
+    <button class="bare" data-tip="Edit this page" onclick={() => goto('/admin/page/' + data.page?.id + '?returnURL=/' + data.page.path)}>
       <Pencil />
     </button>
   </div>
@@ -22,7 +22,7 @@
   <section in:fade>
     <div class="container">
       {#if section.heading}
-        <h2>{section.heading}</h2>
+        <h2 class:centered={section.center_heading}>{section.heading}</h2>
       {/if}
       {#if section.intro}
         <div class="intro margin-bottom-medium">

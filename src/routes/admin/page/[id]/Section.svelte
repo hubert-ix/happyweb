@@ -41,10 +41,10 @@
   <div class="toolbar flex margin-bottom-small">
     <Move />
     <div class="flex">
-      <button class="bare" onclick={() => showSettings = !showSettings}>
+      <button class="bare" data-tip="Show settings for this section" onclick={() => showSettings = !showSettings}>
         <Settings />
       </button>
-      <button class="bare delete" onclick={() => showDeletePopup = true}>
+      <button class="bare delete" data-tip="Delete this section" onclick={() => showDeletePopup = true}>
         <Trash />
       </button>
     </div>
@@ -100,7 +100,6 @@
     border-radius: 0.5rem;
     padding: 1rem 1rem 2rem;
     margin-bottom: 2rem;
-    overflow: hidden;
   }
 
   .toolbar {

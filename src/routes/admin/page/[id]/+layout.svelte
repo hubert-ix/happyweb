@@ -1,6 +1,8 @@
 <script>
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import Tabs from '#lib/UI/Tabs.svelte';
+	import Eye from '@lucide/svelte/icons/eye';
 
 	let { data, children } = $props();
   let segment = $derived(page.url.pathname.split('/')[4] ?? null);
@@ -16,7 +18,12 @@
 </script>
 
 
-<h1>Edit “{data.page.title}”</h1>
+<h1>
+	Edit “{data.page.title}”
+	<button class="bare" data-tip="View this page" onclick={() => goto("/" + data.page.path)}>
+		<Eye />
+	</button>
+</h1>
 
 <Tabs {tabs} {segment} />
 
