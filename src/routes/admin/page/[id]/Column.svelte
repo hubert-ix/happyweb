@@ -7,7 +7,7 @@
   import { blockTypes } from './blocks/index.js';
   import Button from "#lib/UI/Button.svelte";
   import Modal from "#lib/UI/Modal.svelte";
-  import CirclePlus from '@lucide/svelte/icons/circle-plus';
+  import Plus from '@lucide/svelte/icons/plus';
   import Trash from '@lucide/svelte/icons/trash';
   import Block from "./Block.svelte";
 
@@ -95,7 +95,7 @@
   </div>
   
   <Button class="columns" disabled={adding} onclick={() => showCreatePopup = true}>
-		<CirclePlus /> 
+		<Plus /> 
 		{adding ? "Adding..." : "Add something"}
 	</Button>
 
@@ -115,10 +115,6 @@
 
 <style>
   .column {
-    border: solid 1px #ccc;
-    background: #fff;
-    border-radius: 0.5rem;
-    padding: 1rem;
     min-height: 10rem;
     position: relative;
   }

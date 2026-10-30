@@ -59,6 +59,19 @@
 	}
 
 	button.columns {
-		background-color: #719dd1;
+		background-color: #fff;
+		border: 1px dashed #cbd5e1;
+		width: 100%;
+		color: #000;
+	}
+
+	button.bare {
+		background: none;
+		border: none;
+		cursor: pointer;
+		margin: 0;
+		padding: 0;
+		font-size: 1rem;
+		color: inherit;
 	}
 </style>

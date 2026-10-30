@@ -10,7 +10,7 @@
     accept = 'image/*',
     name,
     id = name,
-    onuploaded = undefined
+    onchange = undefined
   } = $props();
   let progress = $state(0);  // 0–100
   let uploading = $state(false);
@@ -50,7 +50,7 @@
       await put(signedUrl, file);
       value = publicUrl;
       uploadedHere.add(publicUrl);
-      onuploaded?.(publicUrl);
+      onchange?.(publicUrl);
     } 
     catch (err) {
       console.error(err);
@@ -65,6 +65,7 @@
     const url = value;
     value = '';
     errorMessage = '';
+    onchange?.('');
     if (!uploadedHere.has(url)) return;   // a saved file: leave it, Save will handle it
     uploadedHere.delete(url);
     try {
@@ -114,6 +115,10 @@
 </div>
 
 <style>
+  .file-input {
+    overflow: hidden;
+  }
+
   .current {
     position: relative;
     display: inline-block;
@@ -123,7 +128,7 @@
   .current img {
     display: block;
     max-width: 100%;
-    max-height: 240px;
+    max-height: 150px;
     border-radius: 6px;
   }
 

@@ -1,10 +1,22 @@
 <script>
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 	import FaceSlightlySmiling from '@lucide/svelte/icons/face-slightly-smiling';
 	import Settings from '@lucide/svelte/icons/settings';
   import './styles.css';
 
 	let { data, children } = $props();
+
+	onMount(() => {
+    function closeTip(e) {
+      const el = e.target.closest?.('[data-tip]');
+      if (!el) return;
+      el.classList.add('tip-closed');
+      el.addEventListener('pointerleave', () => el.classList.remove('tip-closed'), { once: true });
+    }
+    document.addEventListener('pointerdown', closeTip, true);
+    return () => document.removeEventListener('pointerdown', closeTip, true);
+  });
 </script>
 
 

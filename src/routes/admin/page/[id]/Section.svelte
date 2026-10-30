@@ -4,18 +4,22 @@
   import { updateSection } from "#lib/sections.remote.js";
   import FormItem from "#lib/forms/FormItem.svelte";
   import TextInput from "#lib/forms/TextInput.svelte";
+  import RichTextInput from "#lib/forms/RichTextInput.svelte";
   import Modal from "#lib/UI/Modal.svelte";
   import Button from "#lib/UI/Button.svelte";
   import Toggle from "#lib/UI/Toggle.svelte";
+  import FileInput from "#lib/forms/FileInput.svelte";
   import Settings from '@lucide/svelte/icons/settings';
   import Move from '@lucide/svelte/icons/move';
   import Trash from '@lucide/svelte/icons/trash';
+  import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import Column from "./Column.svelte";
   import LayoutPicker from "./LayoutPicker.svelte";
 
   let { section, page, onremove } = $props();
   let showDeletePopup = $state(false);
   let showSettings = $state(false);
+  let showIntro = $state(false);
   let layout = $derived(section.layout ?? defaultLayout);
   let current = $derived(getLayout(layout));
   let columns = $derived([...section.columns].sort((a, b) => a.index - b.index));
@@ -51,9 +55,15 @@
   </div>
 
   {#if showSettings}
-    <div class="options flex margin-bottom-medium" transition:slide>
-      <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
-      <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
+    <div class="options margin-bottom-medium" transition:slide>
+      <h4>Options for this section</h4>
+      <FormItem label="Background image" id="background">
+        <FileInput name="block-image" folder="images" bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
+      </FormItem>
+      <div class="flex">
+        <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
+        <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
+      </div>
     </div>
   {/if}
 
@@ -61,9 +71,20 @@
     <TextInput name="heading" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
   </FormItem>
 
-  <FormItem label="Intro" id="intro">
-    <TextInput name="intro" controlType="textarea" placeholder="Optional intro text" bind:value={section.intro} onFinishedTyping={() => saveSectionKey("intro")} />
-  </FormItem>
+  <div class="intro margin-bottom-small">
+    <button class="bare" class:opened={showIntro} onclick={() => showIntro = !showIntro}>
+      <div class="icon">
+        <ChevronRight />
+      </div>
+      Optional intro
+    </button>
+
+    {#if showIntro}
+      <div transition:slide>
+        <RichTextInput name="intro" placeholder="Optional intro text" bind:value={section.intro} onFinishedTyping={() => saveSectionKey("intro")} />
+      </div>
+    {/if}
+  </div>
 
   <FormItem label="Layout">
     <LayoutPicker bind:value={layout} onchange={saveLayout} />
@@ -102,8 +123,33 @@
     margin-bottom: 2rem;
   }
 
+  .intro button {
+    color: #d8716f;
+    text-decoration: underline;
+    text-underline-position: under;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .intro button .icon {
+    transition: transform 0.3s;
+  }
+
+  .intro button.opened .icon {
+    transform: rotate(90deg);
+  }
+
   .toolbar {
     justify-content: space-between;
+  }
+
+  .options {
+    border: solid 1px #ccc;
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 1rem;
   }
 
   .columns {
@@ -113,7 +159,6 @@
   }
 
   .track {
-    overflow: hidden;
     transition: opacity 0.3s ease;
   }
 

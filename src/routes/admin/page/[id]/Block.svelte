@@ -37,13 +37,15 @@
 <div class="block">
   
   <div class="toolbar flex margin-bottom-small">
-    <div class="handle" data-tip="Move this block" use:dragHandle aria-label="Drag to move this block">
-      <Move size="18" />
-    </div>
     <div class="flex">
+      <div class="handle" data-tip="Move this block" use:dragHandle aria-label="Drag to move this block">
+        <Move size="18" />
+      </div>
       <div class="type">
         {block.type}
       </div>
+    </div>
+    <div class="flex">
       {#if type?.Editor}
         <button class="bare" data-tip="Edit this block" onclick={() => editing = true}>
           <Pencil size="18" />
@@ -78,15 +80,16 @@
 
 <style>
   .block {
-    border: dashed 1px #ccc;
+    border: 1px solid #cbd5e1;
     border-radius: 0.3rem;
     padding: 1rem;
     margin-bottom: 1rem;
-    background: #fafafa;
+    background: #fff;
   }
 
   .toolbar {
     justify-content: space-between;
+    color: #999;
   }
 
   .handle {

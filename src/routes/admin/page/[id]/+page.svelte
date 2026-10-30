@@ -25,6 +25,7 @@
 </script>
 
 
+<!--
 <div class="help full margin-bottom-medium">
 	<div class="icon">
     <Info />
@@ -33,6 +34,7 @@
 	You can have one or several sections, and each section can have one or several columns (each section also has an optional heading)<br />
 	Then each column has some content inside it.
 </div>
+-->
 
 {#each sections as section (section.id)}
 	<Section page={data.page} {section} onremove={removeSection} />
