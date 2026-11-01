@@ -16,7 +16,7 @@
   import Column from "./Column.svelte";
   import LayoutPicker from "./LayoutPicker.svelte";
 
-  let { section, page, onremove } = $props();
+  let { section = $bindable(), page, onremove } = $props();
   let showDeletePopup = $state(false);
   let showSettings = $state(false);
   let showIntro = $state(false);

@@ -1,5 +1,6 @@
 <script>
   import { fade } from 'svelte/transition';
+  import { onDestroy } from 'svelte';
   import { getUploadUrl, deleteFile } from '#lib/files.remote.js';
   import { optimiseImage } from '#lib/optimiseImage.js';
   import Upload from '@lucide/svelte/icons/upload';
@@ -17,6 +18,7 @@
   let uploading = $state(false);
   let errorMessage = $state('');
   let isImage = $derived(accept.startsWith('image'));
+  let localPreview = $state(null); // the picked file, shown straight away instead of waiting for storage
 
   const uploadedHere = new Set();
 
@@ -38,6 +40,13 @@
       xhr.send(body);
     });
   }
+
+  function setLocalPreview(file) {
+    if (localPreview) URL.revokeObjectURL(localPreview);
+    localPreview = file ? URL.createObjectURL(file) : null;
+  }
+
+  onDestroy(() => setLocalPreview(null));
 
   async function upload(e) {
     let file = e.currentTarget.files?.[0];
@@ -85,7 +94,7 @@
   {#if value && !uploading}
     <div class="current" transition:fade={{ duration: 150 }}>
       {#if isImage}
-        <img src={value} alt="" />
+        <img src={localPreview ?? value} alt="" />
       {:else}
         <a href={value} target="_blank" rel="noopener">{value.split('/').pop()}</a>
       {/if}

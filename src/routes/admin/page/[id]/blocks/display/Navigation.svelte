@@ -26,6 +26,9 @@
   nav {
     display: grid;
     gap: 1rem;
+    border: solid 1px #ddd;
+    border-radius: 0.5rem;
+    padding: 1.5rem 1rem;
   }
 
   nav a {

@@ -8,7 +8,10 @@
   
   let { data } = $props();
 	let adding = $state(false);
-	let sections = $derived(data.page.sections);
+	let sections = $derived.by(() => {
+		let s = $state(data.page.sections);
+		return s;
+	});
 
 	async function createSection() {
 		adding = true;
@@ -36,8 +39,8 @@
 </div>
 -->
 
-{#each sections as section (section.id)}
-	<Section page={data.page} {section} onremove={removeSection} />
+{#each sections as section, i (section.id)}
+  <Section page={data.page} bind:section={sections[i]} onremove={removeSection} />
 {/each}
 
 <div class="margin-bottom-medium">
