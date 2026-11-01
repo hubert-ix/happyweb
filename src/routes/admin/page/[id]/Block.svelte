@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
   import { dragHandle } from 'svelte-dnd-action';
   import { updateBlock } from '#lib/remote/blocks.remote.js';
-  import { blockTypes } from './blocks/index.js';
+  import { blockTypes } from '#lib/blocks';
   import Modal from "#lib/UI/Modal.svelte";
   import Button from "#lib/UI/Button.svelte";
   import BlockPanel from './BlockPanel.svelte';

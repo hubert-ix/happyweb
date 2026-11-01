@@ -1,12 +1,9 @@
 import { query, command, getRequestEvent } from '$app/server';
 import { error } from '@sveltejs/kit';
 
-const types = ['text', 'image', 'navigation'];
-
 // CREATE
 export const addBlock = command('unchecked', async ({ columnId, type }) => {
 	const { locals } = getRequestEvent();
-	if (!types.includes(type)) error(400, 'Invalid block type');
 	// index = number of existing blocks in this column
 	const { count, error: countError } = await locals.supabase.from('block').select('id', { count: 'exact', head: true }).eq('column_id', columnId);
 	if (countError) throw countError;

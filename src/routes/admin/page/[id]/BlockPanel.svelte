@@ -1,6 +1,6 @@
 <script>
   import { fade, fly } from 'svelte/transition';
-  import { blockTypes } from './blocks/index.js';
+  import { blockTypes } from '#lib/blocks';
   import X from '@lucide/svelte/icons/x';
   import Button from '#lib/UI/Button.svelte';
 

@@ -2,7 +2,7 @@
   import { fade } from 'svelte/transition';
   import { goto } from '$app/navigation';
   import { getLayout, defaultLayout, tracks } from "#lib/layouts.js";
-  import { blockTypes } from '../admin/page/[id]/blocks/index.js';
+  import { blockTypes } from '#lib/blocks';
   import Pencil from '@lucide/svelte/icons/pencil';
 
   let { data } = $props();
