@@ -3,5 +3,7 @@
 </script>
 
 
-<img src={data.url} alt={data.alt} />
+{#if data.url}
+  <img src={data.url} alt={data.alt} />
+{/if}
 

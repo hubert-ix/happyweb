@@ -1,12 +1,13 @@
 <script>
   import { fade } from 'svelte/transition';
   import { getUploadUrl, deleteFile } from '#lib/files.remote.js';
+  import { optimiseImage } from '#lib/optimiseImage.js';
   import Upload from '@lucide/svelte/icons/upload';
   import X from '@lucide/svelte/icons/x';
 
   let {
-    value = $bindable(''),   // public URL of the uploaded file
-    folder,                  // stored in files/[folder]
+    value = $bindable(''),
+    folder, // stored in files/[folder]
     accept = 'image/*',
     name,
     id = name,
@@ -39,13 +40,14 @@
   }
 
   async function upload(e) {
-    const file = e.currentTarget.files?.[0];
+    let file = e.currentTarget.files?.[0];
     e.currentTarget.value = '';   // lets the same file be picked again after an error
     if (!file) return;
     uploading = true;
     progress = 0;
     errorMessage = '';
     try {
+      file = await optimiseImage(file);
       const { signedUrl, publicUrl } = await getUploadUrl({ folder, filename: file.name });
       await put(signedUrl, file);
       value = publicUrl;

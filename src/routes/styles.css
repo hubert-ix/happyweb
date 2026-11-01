@@ -9,8 +9,8 @@
   --margin-xsmall: 1rem;
   --margin-small: 1.5rem;
   --margin-medium: 2rem;
-  --margin-large: 2.5rem;
-  --margin-xlarge: 3rem;
+  --margin-large: 3rem;
+  --margin-xlarge: 4rem;
 }
 
 * {
@@ -98,6 +98,10 @@ a {
 
 /* misc */
 
+p {
+  margin: 0 0 var(--margin-medium) 0;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -161,7 +165,7 @@ button.delete {
   translate: -50% 4px;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  background: #e656a5;
+  background: #e36f6f;
   color: #fff;
   font-size: 1rem;
   white-space: nowrap;

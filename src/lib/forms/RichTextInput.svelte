@@ -3,6 +3,10 @@
 	import { fade } from 'svelte/transition';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
+	import TextAlign from '@tiptap/extension-text-align';
+	import AlignLeft from '@lucide/svelte/icons/align-left';
+	import AlignCenter from '@lucide/svelte/icons/align-center';
+	import AlignRight from '@lucide/svelte/icons/align-right';
 	import Check from '@lucide/svelte/icons/check';
 	import CircleAlert from '@lucide/svelte/icons/circle-alert';
 	import Bold from '@lucide/svelte/icons/bold';
@@ -38,7 +42,13 @@
 	onMount(() => {
 		editor = new Editor({
 			element: el,
-			extensions: [StarterKit.configure({ link: { openOnClick: false } })],
+			extensions: [
+				StarterKit.configure({ link: { openOnClick: false } }),
+				TextAlign.configure({
+					types: ['heading', 'paragraph'],
+					alignments: ['left', 'center', 'right']
+				})
+			],
 			content: value || '',
 			editable: !disabled,
 			editorProps: { attributes: { id: id ?? '', class: className } },
@@ -142,6 +152,10 @@
 		<span class="sep"></span>
 		<button type="button" data-tip="Heading" aria-label="Heading" {disabled} class:active={isActive('heading', { level: 2 })} onclick={() => run((c) => c.toggleHeading({ level: 2 }))}><Heading2 /></button>
 		<button type="button" data-tip="Subheading" aria-label="Subheading" {disabled} class:active={isActive('heading', { level: 3 })} onclick={() => run((c) => c.toggleHeading({ level: 3 }))}><Heading3 /></button>
+		<span class="sep"></span>
+		<button type="button" data-tip="Align left" aria-label="Align left" {disabled}class:active={isActive({ textAlign: 'left' })} onclick={() => run((c) => c.unsetTextAlign())}><AlignLeft /></button>
+		<button type="button" data-tip="Centre" aria-label="Centre" {disabled} class:active={isActive({ textAlign: 'center' })} onclick={() => run((c) => c.setTextAlign('center'))}><AlignCenter /></button>
+		<button type="button" data-tip="Align right" aria-label="Align right" {disabled} class:active={isActive({ textAlign: 'right' })} onclick={() => run((c) => c.setTextAlign('right'))}><AlignRight /></button>
 		<span class="sep"></span>
 		<button type="button" data-tip="Bullet list" aria-label="Bullet list" {disabled} class:active={isActive('bulletList')} onclick={() => run((c) => c.toggleBulletList())}><List /></button>
 		<button type="button" data-tip="Numbered list" aria-label="Numbered list" {disabled} class:active={isActive('orderedList')} onclick={() => run((c) => c.toggleOrderedList())}><ListOrdered /></button>

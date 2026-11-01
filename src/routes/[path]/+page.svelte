@@ -6,6 +6,14 @@
   import Pencil from '@lucide/svelte/icons/pencil';
 
   let { data } = $props();
+
+  function getBackground(section) {
+    let background = "";
+    if (section.background_url) {
+      background = " background-image: url(" + section.background_url + ")";
+    }
+    return background;
+  }
 </script>
 
 
@@ -19,16 +27,19 @@
 
 {#each data.page.sections as section}
   {@const layout = getLayout(section.layout)}
-  <section in:fade>
+  {@const style = getBackground(section)}
+  <section {style} in:fade>
     <div class="container">
       {#if section.heading}
         <h2 class:centered={section.center_heading}>{section.heading}</h2>
       {/if}
+      <!--
       {#if section.intro}
-        <div class="intro margin-bottom-medium">
-          {section.intro}
+        <div class="intro margin-bottom-large">
+          {@html section.intro}
         </div>
       {/if}
+      -->
       <div class="columns layout-{section.layout}">
         {#each section.columns.slice(0, layout.columns) as column (column.id)}
           <div class="column">
@@ -59,7 +70,7 @@
 
   .columns {
     display: grid;
-    gap: 4rem;
+    gap: 6rem;
   }
 
   .columns.layout-2-equal {
@@ -83,13 +94,14 @@
   }
 
   section {
-    background: #f4f4f4;
-    border-bottom: solid 1px #efefef;
+    background-color: #fff;
+    background-size: cover;
+    background-position: top center;
     padding: 3rem 0;
   }
 
   section:nth-child(even) {
-    background: #fafafa;
+    background: #f9f9f9;
   }
 
   .block {

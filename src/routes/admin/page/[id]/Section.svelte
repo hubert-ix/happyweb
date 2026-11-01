@@ -71,6 +71,7 @@
     <TextInput name="heading" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
   </FormItem>
 
+  <!--
   <div class="intro margin-bottom-small">
     <button class="bare" class:opened={showIntro} onclick={() => showIntro = !showIntro}>
       <div class="icon">
@@ -85,6 +86,7 @@
       </div>
     {/if}
   </div>
+  -->
 
   <FormItem label="Layout">
     <LayoutPicker bind:value={layout} onchange={saveLayout} />
@@ -146,7 +148,7 @@
   }
 
   .options {
-    border: solid 1px #ccc;
+    border: solid 1px #cbd5e1;
     background: #fff;
     border-radius: 0.5rem;
     padding: 1rem;
