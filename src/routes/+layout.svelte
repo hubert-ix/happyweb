@@ -64,6 +64,10 @@
 		gap: 2rem;
 	}
 
+	nav a {
+		text-decoration: none;
+	}
+
 	.user {
 		display: flex;
 		align-items: center;

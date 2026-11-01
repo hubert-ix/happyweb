@@ -33,5 +33,9 @@
 
   .author {
     font-style: italic;
+    font-weight: 600;
+    position: relative;
+    top: -1rem;
+    color: #1a4b5c;
   }
 </style>
