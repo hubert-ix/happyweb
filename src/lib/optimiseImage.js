@@ -17,7 +17,7 @@ export async function optimiseImage(file, { maxWidth = 1000, maxHeight = 600, ty
   if (!blob) return file;
   // already small and well compressed: keep the original
   if (scale === 1 && blob.size >= file.size && file.type === type) return file;
-  const ext = type.split('/')[1];
+  const ext = blob.type.split('/')[1]; // Safari gives png when it can't make webp
   const name = file.name.replace(/\.[^.]+$/, '') + '.' + ext;
-  return new File([blob], name, { type });
+  return new File([blob], name, { type: blob.type });
 }

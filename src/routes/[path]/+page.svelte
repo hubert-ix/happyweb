@@ -101,7 +101,7 @@
   }
 
   section:nth-child(even) {
-    background: #f9f9f9;
+    background-color: #f9f9f9;
   }
 
   .block {
