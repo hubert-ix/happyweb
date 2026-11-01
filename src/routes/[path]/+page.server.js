@@ -23,8 +23,12 @@ export const load = async ({ locals, params }) => {
   );
   let navPages = [];
   if (hasNav) {
-    navPages = await getPages(locals.supabase, page.id);
-    if (!navPages.length && page.parent_id) {
+    const children = await getPages(locals.supabase, page.id);
+    if (children.length) {
+      // this page, above its children
+      navPages = [{ id: page.id, title: page.title, path: page.path, isParent: true }, ...children];
+    } 
+    else if (page.parent_id) {
       const [parent, siblings] = await Promise.all([
         getPage(locals.supabase, page.parent_id),
         getPages(locals.supabase, page.parent_id)

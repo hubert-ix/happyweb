@@ -25,7 +25,7 @@
   </div>
 {/if}
 
-{#each data.page.sections as section}
+{#each data.page.sections as section (section.id)}
   {@const layout = getLayout(section.layout)}
   {@const style = getBackground(section)}
   <section {style} in:fade>

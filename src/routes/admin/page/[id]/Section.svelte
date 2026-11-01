@@ -1,7 +1,7 @@
 <script>
   import { fade, slide } from "svelte/transition";
   import { getLayout, defaultLayout, tracks } from "#lib/layouts.js";
-  import { updateSection } from "#lib/sections.remote.js";
+  import { updateSection } from "#lib/remote/sections.remote.js";
   import FormItem from "#lib/forms/FormItem.svelte";
   import TextInput from "#lib/forms/TextInput.svelte";
   import RichTextInput from "#lib/forms/RichTextInput.svelte";

@@ -3,7 +3,7 @@
   import { slide } from "svelte/transition";
   import { flip } from 'svelte/animate';
   import { dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
-  import { addBlock, deleteBlock, reorderBlocks } from "#lib/blocks.remote.js";
+  import { addBlock, deleteBlock, reorderBlocks } from "#lib/remote/blocks.remote.js";
   import { blockTypes } from './blocks/index.js';
   import Button from "#lib/UI/Button.svelte";
   import Modal from "#lib/UI/Modal.svelte";

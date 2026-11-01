@@ -1,7 +1,7 @@
 <script>
   import { fade } from 'svelte/transition';
   import { onDestroy } from 'svelte';
-  import { getUploadUrl, deleteFile } from '#lib/files.remote.js';
+  import { getUploadUrl, deleteFile } from '#lib/remote/files.remote.js';
   import { optimiseImage } from '#lib/optimiseImage.js';
   import Upload from '@lucide/svelte/icons/upload';
   import X from '@lucide/svelte/icons/x';

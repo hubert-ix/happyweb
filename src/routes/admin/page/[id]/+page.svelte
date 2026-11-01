@@ -1,6 +1,6 @@
 <script>
 	import { invalidate } from '$app/navigation';
-	import { addSection, deleteSection } from '#lib/sections.remote.js';
+	import { addSection, deleteSection } from '#lib/remote/sections.remote.js';
   import Info from '@lucide/svelte/icons/info';
 	import CirclePlus from '@lucide/svelte/icons/circle-plus';
 	import Button from '#lib/UI/Button.svelte';

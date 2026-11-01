@@ -12,9 +12,11 @@
   <nav>
     {#each links as link (link.id)}
       <a href="/{link.path}" class:parent={link.isParent} class:selected={link.id == currentId}>
+        <!--
         {#if link.isParent}
           <ChevronLeft />
         {/if}
+        -->
         {link.title}
       </a>
     {/each}
@@ -28,15 +30,15 @@
     gap: 1rem;
     border: solid 1px #ddd;
     border-radius: 0.5rem;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem;
   }
 
   nav a {
     display: flex;
-    align-items: flex;
+    align-items: center;
     gap: 0.25rem;
     text-decoration: none;
-    padding-left: 1rem;
+    position: relative;
   }
 
   nav a.selected {
@@ -46,9 +48,9 @@
 
   nav a.parent {
     font-weight: 600;
-    border-bottom: solid 1px #ccc;
-    border-left: none;
-    padding-left: 0;
-    padding-bottom: 0.5rem;
+  }
+
+  nav a.parent.selected {
+    color: #000;
   }
 </style>
