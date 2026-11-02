@@ -4,13 +4,14 @@
   import TextInput from '#lib/forms/TextInput.svelte';
 
   let { data = $bindable() } = $props();
+  const uid = $props.id(); // unique ids, so several image blocks on one page don't clash
 </script>
 
 
-<FormItem label="Upload an image" id="block-url">
-  <FileInput name="block-image" folder="images" bind:value={data.url} />
+<FormItem label="Upload an image" id="{uid}-url">
+  <FileInput name="block-image" id="{uid}-url" folder="images" bind:value={data.url} />
 </FormItem>
 
-<FormItem label="Image description" id="block-alt">
-  <TextInput name="block-alt" bind:value={data.alt} />
+<FormItem label="Image description" id="{uid}-alt">
+  <TextInput name="block-alt" id="{uid}-alt" bind:value={data.alt} />
 </FormItem>

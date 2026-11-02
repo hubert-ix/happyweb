@@ -119,7 +119,7 @@
 <style>
   .section {
     border: solid 1px #ccc;
-    background: #f9f9f9;
+    background: #faf9f6; /* #f4f2ec */
     border-radius: 0.5rem;
     padding: 1rem 1rem 2rem;
     margin-bottom: 2rem;

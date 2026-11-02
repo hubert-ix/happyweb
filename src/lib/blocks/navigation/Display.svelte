@@ -39,11 +39,14 @@
     gap: 0.25rem;
     text-decoration: none;
     position: relative;
+    padding-left: 1rem;
+    border-left: solid 3px transparent;
   }
 
   nav a.selected {
     color: #2986c2;
     font-weight: 600;
+    border-color: #2986c2;
   }
 
   nav a.parent {

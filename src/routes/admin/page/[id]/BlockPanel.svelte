@@ -40,7 +40,7 @@
 
 <aside class="panel" transition:fly={{ x: -600, duration: 250 }}>
   <header>
-    <h3>Edit block</h3>
+    <h3>Edit {block.type} block</h3>
     <button class="bare" onclick={requestClose} aria-label="Close">
       <X />
     </button>

@@ -38,7 +38,9 @@ export const load = async ({ locals, params }) => {
   }
   // get the page title
   let pageTitle = page.meta_title?.trim() || page.title;
-  return { page, navPages, pageTitle };
+  // get the top parent
+  let topPageId = await getTopPageId(locals.supabase, page);
+  return { page, navPages, pageTitle, topPageId };
 };
 
 
@@ -65,4 +67,23 @@ async function getPage(supabase, id) {
     .maybeSingle();
   if (error) console.error(error);
   return data;
+}
+
+
+// the top-level ancestor of a page (the page itself if it's top-level)
+async function getTopPageId(supabase, page) {
+  if (!page.parent_id) return page.id;
+  const { data, error } = await supabase.from('page').select('id, parent_id');
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  const parents = new Map(data.map((p) => [p.id, p.parent_id]));
+  let id = page.id;
+  const seen = new Set();
+  while (parents.get(id) && !seen.has(id)) {   // stops at parent_id 0 / null, and on a loop
+    seen.add(id);
+    id = parents.get(id);
+  }
+  return id;
 }

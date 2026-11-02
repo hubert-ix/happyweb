@@ -19,7 +19,7 @@
 
 
 <h1>
-	Edit “{data.page.title}”
+	Edit '{data.page.title}'
 	<button class="bare" data-tip="View this page" onclick={() => goto("/" + data.page.path)}>
 		<Eye />
 	</button>

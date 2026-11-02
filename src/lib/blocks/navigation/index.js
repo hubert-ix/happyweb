@@ -5,7 +5,7 @@ import Editor from './Editor.svelte';
 export default {
   label: 'A navigation block',
   defaults: { },
-  Editor,
+  Editor: null,
   Preview,
   Display
 };

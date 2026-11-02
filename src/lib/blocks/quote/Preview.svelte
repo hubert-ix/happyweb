@@ -23,10 +23,10 @@
   .preview {
     margin: 0;
     white-space: pre-line;
+    font-style: italic;
   }
 
   .author {
-    font-style: italic;
   }
 
   .empty {

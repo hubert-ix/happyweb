@@ -39,7 +39,7 @@
 	}
 
   .description {
-    color: #de78ba;
+    color: #7c9eb7;
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
   }

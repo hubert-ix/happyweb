@@ -327,7 +327,7 @@
 	}
 
 	a.view {
-		color: #0e8112;
+		color: #000;
 	}
 
 	.handle {

@@ -1,7 +1,12 @@
 <script>
+  import { onMount } from 'svelte';
 	import PageForm from '../PageForm.svelte';
 
 	let { form, data } = $props();
+
+	onMount(() => {
+		document.getElementById("title").focus();
+	});
 </script>
 
 

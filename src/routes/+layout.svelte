@@ -28,8 +28,8 @@
 <header>
 	<div class="container header">
 		<nav>
-			{#each data.pages as page}
-				<a href="/{page.path}">{page.title}</a>
+			{#each data.pages as link (link.id)}
+				<a href="/{link.path}" class:selected={link.id === page.data.topPageId}>{link.title}</a>
 			{/each}
 		</nav>
 		{#if data.user}
@@ -66,6 +66,11 @@
 
 	nav a {
 		text-decoration: none;
+		border-bottom: solid 2px transparent;
+	}
+
+	nav a.selected {
+		border-color: #000;
 	}
 
 	.user {

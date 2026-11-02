@@ -4,6 +4,7 @@ import Editor from './Editor.svelte';
 
 export default {
   label: 'Some image',
+  //inline: true, // edit directly in the block, no side panel
   defaults: { url: null, alt: '' },
   Editor,
   Preview,
