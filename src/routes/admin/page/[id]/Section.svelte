@@ -56,13 +56,21 @@
 
   {#if showSettings}
     <div class="options margin-bottom-medium" transition:slide>
-      <h4>Options for this section</h4>
-      <FormItem label="Background image" id="background">
-        <FileInput name="block-image" folder="images" bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
-      </FormItem>
-      <div class="flex">
-        <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
-        <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
+      <div class="options-left width-medium">
+        <FormItem label="Anchor name" id="anchor-{section.id}" description="This is used to click on a link and jump to this section">
+          <TextInput name="anchor-{section.id}" bind:value={section.anchor} />
+        </FormItem>
+        <FormItem label="Section background image" id="background">
+          <FileInput name="block-image" folder="images" bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
+        </FormItem>
+      </div>
+      <div class="options-right">
+        <FormItem>
+          <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
+        </FormItem>
+        <FormItem>
+          <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
+        </FormItem>
       </div>
     </div>
   {/if}
@@ -152,6 +160,12 @@
     background: #fff;
     border-radius: 0.5rem;
     padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .options-right {
+    padding-top: 1rem;
   }
 
   .columns {

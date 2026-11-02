@@ -60,6 +60,10 @@ body {
   padding-bottom: 4rem;
 }
 
+.width-medium {
+  max-width: 32rem;
+}
+
 main {
   padding-top: 60px;
 }

@@ -28,7 +28,7 @@
 {#each data.page.sections as section (section.id)}
   {@const layout = getLayout(section.layout)}
   {@const style = getBackground(section)}
-  <section {style} in:fade>
+  <section id={section.anchor || undefined} {style} in:fade>
     <div class="container">
       {#if section.heading}
         <h2 class:centered={section.center_heading}>{section.heading}</h2>
