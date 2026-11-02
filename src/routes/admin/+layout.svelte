@@ -4,16 +4,17 @@
 	import Tabs from '#lib/UI/Tabs.svelte';
 
   let { children } = $props();
-  let segment = $derived(page.url.pathname.split('/')[4] ?? null);
+  let segment = $derived(page.url.pathname.split('/')[2] ?? null);
 	let tabs = [
-			{ label: 'Pages', path: '/admin', value: "" },
-			{ label: 'Settings', path: '/admin/settings', value: "settings" }
-		];
+		{ label: 'Your pages', href: '/admin', value: "" },
+		{ label: 'Sumptuous settings', href: '/admin/settings', value: "settings" }
+	];
 </script>
 
 
-<div class="container">
-  <!--<Tabs {tabs} {segment} />-->
+<div class="container padding">
+	<h1>Amazing admin dashboard</h1>
+  <Tabs {tabs} {segment} />
   {@render children?.()}
 </div>
 

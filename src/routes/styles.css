@@ -56,6 +56,14 @@ body {
   position: relative;
 }
 
+.container.padding {
+  padding-bottom: 4rem;
+}
+
+main {
+  padding-top: 60px;
+}
+
 /* headings */
 
 h1,

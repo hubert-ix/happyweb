@@ -100,7 +100,7 @@
     padding: 3rem 0;
   }
 
-  section:nth-child(even) {
+  section:nth-child(odd) {
     background-color: #f9f9f9;
   }
 

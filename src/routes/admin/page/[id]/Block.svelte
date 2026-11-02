@@ -68,8 +68,8 @@
   });
 
   onMount(() => {
-    if (autoEdit && type?.Editor && !inline) editing = true;
-    onautoedited?.();
+    //if (autoEdit && type?.Editor && !inline) editing = true;
+    //onautoedited?.();
   });
 
   function deleteBlock() {

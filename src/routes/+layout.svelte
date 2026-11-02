@@ -43,13 +43,20 @@
 	</div>	
 </header>
 
-{@render children()}
+<main>
+	{@render children()}
+</main>
 
 
 <style>
 	header {
 		padding: 1rem 0;
 		border-bottom: solid 2px #eee;
+		background: #fff;
+		position: fixed;
+		display: block;
+		width: 100%;
+		z-index: 10;
 	}
 
 	.container.header {

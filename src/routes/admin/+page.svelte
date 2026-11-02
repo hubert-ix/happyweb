@@ -8,8 +8,7 @@
 </script>
 
 
-<h1>Amazing admin dashboard</h1>
-
+<!--
 <div class="help margin-bottom-medium">
   <div class="icon">
     <Info />
@@ -18,18 +17,19 @@
   You can edit or delete them, and also create a new page.<br />
   You can also change their order by clicking on a page's handle and moving it around.
 </div>
-
-<div class="margin-bottom-large">
-  <Button href="/admin/page/create">
-    <CirclePlus />
-    Create a new awesome page
-  </Button>
-</div>
+-->
 
 <div class="pages">
   {#await data.pages then pages}
     <PageTree {pages} />
   {/await}
+</div>
+
+<div class="margin-top-large">
+  <Button href="/admin/page/create">
+    <CirclePlus />
+    Create a new awesome page
+  </Button>
 </div>
 
 
