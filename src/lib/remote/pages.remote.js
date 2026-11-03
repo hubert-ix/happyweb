@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 
 // CREATE
 export const addPage = command('unchecked', async (values) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const { data, error: insertError } = await locals.supabase.from('page').insert(values).select().single();
 	if (insertError) throw insertError;
 	return { page: data };
@@ -13,6 +13,7 @@ export const addPage = command('unchecked', async (values) => {
 // READ ONE
 export const getPage = query('unchecked', async (arg) => {
 	const { locals } = getRequestEvent();
+	const { user } = await locals.safeGetSession();
 	const supabase = locals.supabase;
 	let q = supabase
 		.from('page')
@@ -20,7 +21,9 @@ export const getPage = query('unchecked', async (arg) => {
 		.order('index', { referencedTable: 'sections' })
 		.order('index', { referencedTable: 'sections.columns' })
 		.order('index', { referencedTable: 'sections.columns.blocks' });
-  // find out 
+	// only show unpublished page to logged in users
+	if (!user) q = q.eq('published', true);
+  // find out which param to use to load the page
 	if (arg?.path !== undefined) {
     q = q.eq('path', arg.path);
   }
@@ -43,7 +46,7 @@ export const getPage = query('unchecked', async (arg) => {
 
 // UPDATE
 export const updatePage = command('unchecked', async ({ id, values }) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const { error: updateError } = await locals.supabase.from('page').update(values).eq('id', id);
 	if (updateError) throw updateError;
 	return {};
@@ -52,7 +55,7 @@ export const updatePage = command('unchecked', async ({ id, values }) => {
 
 // DELETE
 export const deletePage = command('unchecked', async (id) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const { error: deleteError } = await locals.supabase.from('page').delete().eq('id', id);
 	if (deleteError) throw deleteError;
 	return {};
@@ -100,7 +103,7 @@ async function getNavPages(supabase, page) {
 async function getMenuPages(supabase, parentId) {
 	const { data, error: fetchError } = await supabase
 		.from('page')
-		.select('id, title, path')
+		.select('id, title, path, is_home')
 		.eq('parent_id', parentId)
 		.eq('published', true)
 		.eq('in_menu', true)
@@ -112,11 +115,18 @@ async function getMenuPages(supabase, parentId) {
 async function getMenuPage(supabase, id) {
 	const { data, error: fetchError } = await supabase
 		.from('page')
-		.select('id, title, path')
+		.select('id, title, path, is_home')
 		.eq('id', id)
 		.eq('published', true)
 		.eq('in_menu', true)
 		.maybeSingle();
 	if (fetchError) throw fetchError;
 	return data;
+}
+
+async function requireUser() {
+	const { locals } = getRequestEvent();
+	const { user } = await locals.safeGetSession();
+	if (!user) error(401, 'Not signed in');
+	return locals;
 }

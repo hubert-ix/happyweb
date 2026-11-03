@@ -15,7 +15,7 @@
     <div class="container header">
       <nav>
         {#each data.pages as link (link.id)}
-          <a href="/{link.path}" class:selected={link.id === page.data.topPageId}>{link.title}</a>
+          <a href={link.is_home ? '/' : `/${link.path}`} class:selected={link.id === page.data.topPageId}>{link.title}</a>
         {/each}
       </nav>
       {#if data.user}

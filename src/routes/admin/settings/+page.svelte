@@ -16,6 +16,10 @@
     <FileInput />
   </FormItem>
 
+  <FormItem label="Favicon" description="This is the small image displayed in the browser's tabs">
+    <FileInput />
+  </FormItem>
+
   <Button>Save settings</Button>
 
 </div>

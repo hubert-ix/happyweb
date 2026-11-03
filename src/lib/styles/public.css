@@ -1,6 +1,6 @@
 .public {
 	--font-body: 'Open Sans', sans-serif;
-	--font-heading: 'Playfair Display';
+	--font-heading: 'Playfair Display', serif;
   --color-text: #000;
   --color-border: #e7e4de;
 

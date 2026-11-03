@@ -7,7 +7,7 @@ export const load = async ({ params }) => {
     error(404, 'Page not found.');
   }
 	if (page.is_home) {
-    redirect(301, '/');
+    redirect(307, '/');
   }
 	return {
 		page,

@@ -39,7 +39,6 @@
 </div>
 
 
-
 <style>
 	.back {
 		position: relative;
