@@ -1,0 +1,80 @@
+<script>
+	import { page } from '$app/state';
+	import { onMount } from 'svelte';
+	import FaceSlightlySmiling from '@lucide/svelte/icons/face-slightly-smiling';
+	import Settings from '@lucide/svelte/icons/settings';
+  import '#lib/styles/public.css';
+
+	let { data, children } = $props();
+</script>
+
+
+<div class="public">
+
+  <header>
+    <div class="container header">
+      <nav>
+        {#each data.pages as link (link.id)}
+          <a href="/{link.path}" class:selected={link.id === page.data.topPageId}>{link.title}</a>
+        {/each}
+      </nav>
+      {#if data.user}
+        <div class="user">
+          Hello, {data.user.first_name}
+          <a href="/admin">
+            <Settings />
+          </a>
+        </div>
+      {/if}
+    </div>	
+  </header>
+
+  <main>
+    {@render children()}
+  </main>
+
+</div>
+
+
+<style>
+	header {
+		padding: 1rem 0;
+		border-bottom: solid 2px #eee;
+		background: #fff;
+		position: fixed;
+		display: block;
+		width: 100%;
+		z-index: 10;
+	}
+
+	.container.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	nav a {
+		text-decoration: none;
+		border-bottom: solid 2px transparent;
+	}
+
+	nav a.selected {
+		border-color: #000;
+	}
+
+	.user {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.user a {
+		display: flex;
+	}
+</style>

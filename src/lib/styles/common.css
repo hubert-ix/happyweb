@@ -1,0 +1,201 @@
+:root {
+  --color-error: #cd2020;
+  --margin-xxsmall: 0.5rem;
+  --margin-xsmall: 1rem;
+  --margin-small: 1.5rem;
+  --margin-medium: 2rem;
+  --margin-large: 3rem;
+  --margin-xlarge: 4rem;
+}
+
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+header,
+nav,
+section,
+article,
+aside,
+footer {
+	display: block;
+}
+
+body {
+	background: #fff;
+	text-align: left;
+	font-size: 1rem;
+  line-height: 1.6;
+}
+
+.container {
+	width: 100%;
+  max-width: 90rem;
+	margin: auto;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+	position: relative;
+	text-align: left;
+  position: relative;
+}
+
+.container.padding {
+  padding-bottom: 4rem;
+}
+
+.width-medium {
+  max-width: 32rem;
+}
+
+main {
+  padding-top: 60px;
+}
+
+/* margin */
+
+.margin-top-none {
+  margin-top: 0;
+}
+
+.margin-top-xxsmall {
+  margin-top: var(--margin-xxsmall);
+}
+
+.margin-top-xsmall {
+  margin-top: var(--margin-xsmall);
+}
+
+.margin-top-small {
+  margin-top: var(--margin-small);
+}
+
+.margin-top-medium {
+  margin-top: var(--margin-medium);
+}
+
+.margin-top-large {
+  margin-top: var(--margin-large);
+}
+
+.margin-top-xlarge {
+  margin-top: var(--margin-xlarge);
+}
+
+.margin-bottom-none {
+  margin-bottom: 0px;
+}
+
+.margin-bottom-xxsmall {
+  margin-bottom: var(--margin-xxsmall);
+}
+
+.margin-bottom-xsmall {
+  margin-bottom: var(--margin-xsmall);
+}
+
+.margin-bottom-small {
+  margin-bottom: var(--margin-small);
+}
+
+.margin-bottom-medium {
+  margin-bottom: var(--margin-medium);
+}
+
+.margin-bottom-large {
+  margin-bottom: var(--margin-large);
+}
+
+.margin-bottom-xlarge {
+  margin-bottom: var(--margin-xlarge);
+}
+
+/* misc */
+
+p {
+  margin: 0 0 var(--margin-medium) 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.centered {
+  justify-content: center;
+}
+
+.error {
+  color: #dc2626;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* buttons */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: #119501;
+  color: #fff;
+  font: inherit;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.button:disabled,
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button.columns {
+  background-color: #fff;
+  border: 1px dashed #cbd5e1;
+  width: 100%;
+  color: #000;
+}
+
+button.bare {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  color: inherit;
+}
+
+.button.cancel {
+  background: #fff;
+  border: solid 1px #999;
+  color: #000;
+  opacity: 0.6;
+}
+
+.button.delete {
+  background: var(--color-error);
+  color: #fff;
+}
+
+button.delete {
+  color: var(--color-error);
+}

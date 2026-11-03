@@ -43,7 +43,14 @@
 <div class="section" transition:fade>
 
   <div class="toolbar flex margin-bottom-small">
-    <Move />
+    <div class="toolbar-left flex">
+      <Move />
+      {#if section.hidden}
+        <div class="hidden-label">
+          Hidden section
+        </div>
+      {/if}
+    </div>
     <div class="flex">
       <button class="bare" data-tip="Show settings for this section" onclick={() => showSettings = !showSettings}>
         <Settings />
@@ -153,6 +160,11 @@
 
   .toolbar {
     justify-content: space-between;
+  }
+
+  .hidden-label {
+    opacity: 0.4;
+    font-style: italic;
   }
 
   .options {

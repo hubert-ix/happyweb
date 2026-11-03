@@ -5,7 +5,7 @@
   import { blockTypes } from '#lib/blocks';
   import Pencil from '@lucide/svelte/icons/pencil';
 
-  let { data } = $props();
+  let { page, user } = $props();
 
   function getBackground(section) {
     let background = "";
@@ -17,15 +17,15 @@
 </script>
 
 
-{#if data.user}
+{#if user}
   <div class="container edit-page">
-    <button class="bare" data-tip="Edit this page" onclick={() => goto('/admin/page/' + data.page?.id + '?returnURL=/' + data.page.path)}>
+    <button class="bare" data-tip="Edit this page" onclick={() => goto('/admin/page/' + page?.id + '?returnURL=/' + page.path)}>
       <Pencil />
     </button>
   </div>
 {/if}
 
-{#each data.page.sections as section (section.id)}
+{#each page.sections as section (section.id)}
   {@const layout = getLayout(section.layout)}
   {@const style = getBackground(section)}
   <section id={section.anchor || undefined} {style} in:fade>

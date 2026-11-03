@@ -1,19 +1,9 @@
 import { fail, redirect, error } from '@sveltejs/kit';
+import { getPage } from '#lib/remote/pages.remote.js';
 
 export const load = async ({ locals, params, depends }) => {
   depends("page");
-  const { data: page, error: err } = await locals.supabase
-    .from('page')
-    .select('*, sections:section(*, columns:column(*, blocks:block(*)))')
-    .eq('id', params.id)
-    .order('index', { referencedTable: 'sections' })
-    .order('index', { referencedTable: 'sections.columns' })
-    .order('index', { referencedTable: 'sections.columns.blocks' })
-    .maybeSingle();
-  if (err && err.code !== '22P02') {
-    console.error('Failed to load page:', err);
-    error(500, 'Could not load this page.');
-  }
+  const { page } = await getPage(params.id);
   if (!page) {
     error(404, 'Page not found.');
   }

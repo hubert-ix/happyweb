@@ -174,11 +174,11 @@
           </div>
         {/if}
       </div>
-    {/if}
 
-    <div class="margin-bottom-xsmall">
-       or
-    </div>
+      <div class="margin-bottom-xsmall">
+        or
+      </div>
+    {/if}
 
     <label class="pick">
       <Upload size="18" />

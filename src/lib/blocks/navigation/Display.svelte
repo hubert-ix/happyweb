@@ -3,7 +3,7 @@
   import ChevronLeft from '@lucide/svelte/icons/chevron-left';
 
   let { data = $bindable() } = $props();
-  let links = $derived(page.data.navPages ?? []);
+  let links = $derived(page.data.page.nav_pages ?? []);
   let currentId = $derived(page.data.page?.id);
 </script>
 
