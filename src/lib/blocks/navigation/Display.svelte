@@ -31,6 +31,7 @@
     border: solid 1px #ddd;
     border-radius: 0.5rem;
     padding: 1.5rem;
+    background-color: rgb(255 255 255 / 50%);
   }
 
   nav a {

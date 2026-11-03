@@ -1,4 +1,5 @@
 <script>
+  import { fade } from 'svelte/transition';
   import CirclePlus from '@lucide/svelte/icons/circle-plus';
   import Info from '@lucide/svelte/icons/info';
   import Button from '#lib/UI/Button.svelte';
@@ -19,17 +20,19 @@
 </div>
 -->
 
-<div class="pages">
-  {#await data.pages then pages}
-    <PageTree {pages} />
-  {/await}
-</div>
-
-<div class="margin-top-large">
+<div class="margin-bottom-large">
   <Button href="/admin/page/create">
     <CirclePlus />
     Create a new awesome page
   </Button>
+</div>
+
+<div class="pages">
+  {#await data.pages then pages}
+    <div in:fade>
+      <PageTree {pages} />
+    </div>
+  {/await}
 </div>
 
 
