@@ -198,7 +198,10 @@ button.bare {
 }
 
 .button.cancel {
-  background: #999;
+  background: #fff;
+  border: solid 1px #999;
+  color: #000;
+  opacity: 0.6;
 }
 
 .button.delete {

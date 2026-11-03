@@ -52,9 +52,6 @@
     {:else}
       <p>This block type can't be edited yet.</p>
     {/if}
-  </div>
-
-  <footer>
     {#if errorMessage}
       <p class="error">{errorMessage}</p>
     {/if}
@@ -64,7 +61,7 @@
       </Button>
       <Button class="cancel" onclick={requestClose} disabled={saving}>Cancel</Button>
     </div>
-  </footer>
+  </div>
 </aside>
 
 
@@ -80,7 +77,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: min(800px, 100%);
+    width: min(1000px, 100%);
     height: 100dvh;
     background: #fff;
     box-shadow: 4px 0 16px rgb(0 0 0 / 0.15);
@@ -102,7 +99,7 @@
   }
 
   .body {
-    flex: 1;
+
     overflow-y: auto;
     padding: 1.5rem;
   }

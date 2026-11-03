@@ -1,10 +1,13 @@
 <script>
   import { fade } from 'svelte/transition';
   import { onDestroy } from 'svelte';
-  import { getUploadUrl, deleteFile } from '#lib/remote/files.remote.js';
+  import { getUploadUrl, deleteFile, listImages } from '#lib/remote/files.remote.js';
   import { optimiseImage } from '#lib/optimiseImage.js';
   import Upload from '@lucide/svelte/icons/upload';
   import X from '@lucide/svelte/icons/x';
+  import Images from '@lucide/svelte/icons/images';
+  import ChevronDown from '@lucide/svelte/icons/chevron-down';
+    import Button from '#lib/UI/Button.svelte';
 
   let {
     value = $bindable(''),
@@ -12,13 +15,16 @@
     accept = 'image/*',
     name,
     id = name,
-    onchange = undefined
+    onchange = undefined,
+    includeLibrary = false // adds an "Open library" button listing the images already in files/[folder]
   } = $props();
   let progress = $state(0);  // 0–100
   let uploading = $state(false);
   let errorMessage = $state('');
   let isImage = $derived(accept.startsWith('image'));
   let localPreview = $state(null); // the picked file, shown straight away instead of waiting for storage
+  let libraryOpen = $state(false);
+  let libraryEl = $state();
 
   const uploadedHere = new Set();
 
@@ -62,6 +68,7 @@
       value = publicUrl;
       uploadedHere.add(publicUrl);
       onchange?.(publicUrl);
+      if (includeLibrary) listImages(folder).refresh();
     } 
     catch (err) {
       console.error(err);
@@ -81,17 +88,42 @@
     uploadedHere.delete(url);
     try {
       await deleteFile(url);
+      if (includeLibrary) listImages(folder).refresh();
     }
     catch (err) {
       console.error(err);
     }
   }
+
+  function toggleLibrary() {
+    libraryOpen = !libraryOpen;
+    if (libraryOpen) listImages(folder).refresh();   // pick up files added elsewhere since last time
+  }
+
+  function pickFromLibrary(url) {
+    setLocalPreview(null);
+    errorMessage = '';
+    value = url;
+    libraryOpen = false;
+    onchange?.(url);
+  }
+
+  // close on Escape or a click outside the library
+  function onWindowKeydown(e) {
+    if (libraryOpen && e.key === 'Escape') libraryOpen = false;
+  }
+  function onWindowClick(e) {
+    if (libraryOpen && libraryEl && !libraryEl.contains(e.target)) libraryOpen = false;
+  }
 </script>
 
+
+<svelte:window onkeydown={onWindowKeydown} onclick={onWindowClick} />
 
 <div class="file-input">
 
   {#if value && !uploading}
+
     <div class="current" transition:fade={{ duration: 150 }}>
       {#if isImage}
         <img src={localPreview ?? value} alt="" />
@@ -105,16 +137,55 @@
   {/if}
 
   {#if uploading}
+
     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={progress}>
       <div class="bar" style:width="{progress}%"></div>
       <span>{progress}%</span>
     </div>
+
   {:else if !value}
+
+    {#if includeLibrary}
+      <div class="library" bind:this={libraryEl}>
+        <Button onclick={toggleLibrary}>
+          Choose an existing image
+        </Button>
+        {#if libraryOpen}
+          <div class="dropdown" id="{id}-library" transition:fade={{ duration: 150 }}>
+            {#await listImages(folder)}
+              <p class="note">Loading images…</p>
+            {:then images}
+              {#if images.length}
+                <ul>
+                  {#each images as image (image.url)}
+                    <li>
+                      <button type="button" class="bare thumb" onclick={() => pickFromLibrary(image.url)} title={image.name}>
+                        <img src={image.url} alt={image.name} loading="lazy" />
+                      </button>
+                    </li>
+                  {/each}
+                </ul>
+              {:else}
+                <p class="note">No images uploaded yet.</p>
+              {/if}
+            {:catch}
+              <p class="note error">The library couldn't be loaded.</p>
+            {/await}
+          </div>
+        {/if}
+      </div>
+    {/if}
+
+    <div class="margin-bottom-xsmall">
+       or
+    </div>
+
     <label class="pick">
       <Upload size="18" />
       Choose a file
       <input type="file" {id} {accept} onchange={upload} />
     </label>
+
   {/if}
 
   {#if errorMessage}
@@ -151,6 +222,68 @@
     border-radius: 50%;
     background: rgb(255 255 255 / 0.9);
     display: flex;
+  }
+
+  .library {
+    margin-bottom: 0.75rem;
+  }
+
+  .open-library {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .open-library :global(.flipped) {
+    transform: rotate(180deg);
+  }
+
+  .dropdown {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  .dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    outline-offset: 2px;
+  }
+
+  .thumb:hover,
+  .thumb:focus-visible {
+    outline: 2px solid #93c5fd;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .note {
+    margin: 0.25rem;
+    color: #555;
+    font-size: 0.9rem;
   }
 
   .pick {

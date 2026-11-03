@@ -8,8 +8,8 @@
 </script>
 
 
-<FormItem label="Upload an image" id="{uid}-url">
-  <FileInput name="block-image" id="{uid}-url" folder="images" bind:value={data.url} />
+<FormItem id="{uid}-url">
+  <FileInput name="block-image" id="{uid}-url" folder="images" bind:value={data.url} includeLibrary={true} />
 </FormItem>
 
 <FormItem label="Image description" id="{uid}-alt">
