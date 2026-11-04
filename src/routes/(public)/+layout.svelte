@@ -1,7 +1,5 @@
 <script>
 	import { page } from '$app/state';
-	import { onMount } from 'svelte';
-	import FaceSlightlySmiling from '@lucide/svelte/icons/face-slightly-smiling';
 	import Settings from '@lucide/svelte/icons/settings';
   import '#lib/styles/public.css';
 
@@ -72,8 +70,16 @@
 		border-color: #000;
 	}
 
+	a.logo {
+		display: flex;
+		margin-block: -1rem;   /* same as the header's vertical padding */
+		border-bottom: none;
+	}
+
 	a.logo img {
-		width: 30px;
+		display: block;
+		height: 3rem;
+		width: auto;
 	}
 
 	.user {

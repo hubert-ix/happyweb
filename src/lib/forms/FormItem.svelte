@@ -30,18 +30,21 @@
 
 <style>
   .form-item {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.25rem;
   }
 
   label {
-		display: block;
-    color: #000;
-	}
+    display: block;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.15rem;
+  }
 
   .description {
-    color: #7c9eb7;
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #64748b;
+    margin-bottom: 0.6rem;
   }
 
   .input {
