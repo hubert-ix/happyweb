@@ -30,6 +30,10 @@ body {
   line-height: 1.6;
 }
 
+main {
+  padding-top: 60px;
+}
+
 .container {
 	width: 100%;
   max-width: 90rem;
@@ -47,10 +51,6 @@ body {
 
 .width-medium {
   max-width: 32rem;
-}
-
-main {
-  padding-top: 60px;
 }
 
 /* margin */
@@ -199,3 +199,45 @@ button.bare {
 button.delete {
   color: var(--color-error);
 }
+
+ /* tooltip */
+
+  [data-tip] {
+    position: relative;
+  }
+
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    translate: -50% 4px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: #e36f6f;
+    color: #fff;
+    font-size: 1rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s, translate 0.15s;
+    z-index: 1000;
+  }
+
+  [data-tip][data-tip-direction="below"]::after {
+    bottom: auto;
+    top: calc(100% + 6px);
+    translate: -50% -4px;
+  }
+
+  [data-tip]:hover::after,
+  [data-tip]:focus-visible::after {
+    opacity: 1;
+    translate: -50% 0;
+    transition-delay: 0s;
+  }
+
+  [data-tip].tip-closed::after {
+    opacity: 0;
+    transition-delay: 0s;
+  }

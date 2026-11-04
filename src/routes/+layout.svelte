@@ -7,8 +7,8 @@
 
 
 <svelte:head>
-	<link rel="icon" href="/images/favicon.png" />
-	<title>{page.data.pageTitle} | Happy Web</title>
+	<link rel="icon" href={data.settings?.favicon ?? "/images/favicon.svg"} />
+	<title>{page.data.pageTitle} | {data.settings?.site_name}</title>
 </svelte:head>
 
 {@render children()}

@@ -3,7 +3,7 @@
 </script>
 
 
-<nav class="tabs margin-bottom-large">
+<nav class="tabs margin-bottom-medium">
 	{#each tabs as tab (tab.label)}
 		{@const selected = (tab.value || null) === segment}
 		<a href={tab.href} class:selected>
@@ -35,7 +35,7 @@
 	}
 
 	a.selected {
-		color: #ee82d3;
+		color: #ea6aca;
 		border-bottom-color: #ee82d3;
 	}
 

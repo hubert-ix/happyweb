@@ -211,6 +211,7 @@
     display: block;
     max-width: 100%;
     max-height: 150px;
+    min-width: 80px;
     border-radius: 6px;
   }
 

@@ -111,6 +111,10 @@
 		border-color: #dc2626;
 	}
 
+  input.full-width {
+    max-width: 100%;
+  }
+
 	.status {
     position: absolute;
     right: 0.6rem;

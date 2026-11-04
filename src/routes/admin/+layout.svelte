@@ -4,9 +4,12 @@
 	import { onMount } from 'svelte';
 	import Tabs from '#lib/UI/Tabs.svelte';
 	import ChevronLeft from '@lucide/svelte/icons/chevron-left';
+	import LogOut from '@lucide/svelte/icons/log-out';
+	import FaceSlightlySmiling from '@lucide/svelte/icons/face-slightly-smiling';
+	import CircleChevronRight from '@lucide/svelte/icons/circle-chevron-right';
 	import '#lib/styles/admin.css';
 
-  let { children } = $props();
+  let { data, children } = $props();
   let segment = $derived(page.url.pathname.split('/')[2] ?? null);
 	let tabs = [
 		{ label: 'Your pages', href: '/admin', value: "" },
@@ -26,31 +29,68 @@
 </script>
 
 
-<div class="container padding admin">
-	<div class="back">
-		<a href="/">
-			<ChevronLeft />
-			Back to your site
-		</a>
-	</div>
-	<h1>Amazing admin dashboard</h1>
-  <Tabs {tabs} {segment} />
-  {@render children?.()}
+<div class="admin">
+
+	<header>
+		<div class="container header">
+			<div class="happyweb flex">
+				<FaceSlightlySmiling />
+				HappyWeb <span>Admin</span>
+			</div>
+			<div class="user flex">
+				Hello, {data.user.first_name}
+				<a href="/" data-tip="Back to your site" data-tip-direction="below">
+					<CircleChevronRight />
+				</a>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		{#if segment != 'page'}
+			<div class="container padding">
+				<h1>Amazing admin dashboard</h1>
+				<Tabs {tabs} {segment} />
+				{@render children?.()}
+			</div>
+		{:else}
+			{@render children?.()}
+		{/if}
+	</main>
+
 </div>
 
 
 <style>
-	.back {
-		position: relative;
-		top: 2.5rem;
+	header {
+		padding: 1rem 0;
+		border-bottom: solid 2px #eee;
+		background: #f4f4ee;
+		position: fixed;
+		top: 0;
+		display: block;
+		width: 100%;
+		z-index: 10;
 	}
 
-	.back a {
-		text-decoration: none;
-		font-size: 0.9rem;
+	.container.header {
 		display: flex;
 		align-items: center;
-		gap: 0.25rem;
-		color: #6899be;
+		justify-content: space-between;
+	}
+
+	.happyweb {
+		font-weight: 600;
+		color: #000;
+		gap: 0.5rem;
+	}
+
+	.happyweb span {
+		font-weight: 400;;
+		color: #999;
+	}
+
+	.user a {
+		display: flex;
 	}
 </style>

@@ -19,7 +19,7 @@
 
 {#if user}
   <div class="container edit-page">
-    <button class="bare" data-tip="Edit this page" onclick={() => goto('/admin/page/' + page?.id + '?returnURL=/' + page.path)}>
+    <button class="bare" data-tip="Edit this page" data-tip-direction="below" onclick={() => goto('/admin/page/' + page?.id + '?returnURL=/' + page.path)}>
       <Pencil />
     </button>
   </div>

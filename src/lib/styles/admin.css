@@ -62,6 +62,10 @@ body:has(.admin) {
     color: #fff;
   }
 
+  main {
+    padding-top: 60px;
+  }
+
   .help {
     background: #f5e9fa; 
     border: solid 1px #c18adb;
@@ -75,42 +79,6 @@ body:has(.admin) {
     position: absolute;
     left: 0.5rem;
     top: 1rem;
-  }
-
-  /* tooltip */
-
-  [data-tip] {
-    position: relative;
-  }
-
-  [data-tip]::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    translate: -50% 4px;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    background: #e36f6f;
-    color: #fff;
-    font-size: 1rem;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s, translate 0.15s;
-    z-index: 1000;
-  }
-
-  [data-tip]:hover::after,
-  [data-tip]:focus-visible::after {
-    opacity: 1;
-    translate: -50% 0;
-    transition-delay: 0s;
-  }
-
-  [data-tip].tip-closed::after {
-    opacity: 0;
-    transition-delay: 0s;
   }
 
 }

@@ -40,6 +40,11 @@
 
 <style>
 	.back {
+		/*
+		position: absolute;
+		top: 0;
+		right: 2rem;
+		*/
 		position: relative;
 		top: 2rem;
 	}

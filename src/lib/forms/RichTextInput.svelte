@@ -17,6 +17,7 @@
 	import ListOrdered from '@lucide/svelte/icons/list-ordered';
 	import Link from '@lucide/svelte/icons/link';
   import MousePointerClick from '@lucide/svelte/icons/mouse-pointer-click';
+	import CodeXml from '@lucide/svelte/icons/code-xml';
 
 	let {
 		value = $bindable(''),
@@ -38,12 +39,20 @@
 	let status = $state('idle'); // 'idle' | 'saved' | 'error'
 	let statusTimer = null;
 	let saveId = 0;
+	let showSource = $state(false);
+	let source = $state('');
+	let toolsDisabled = $derived(disabled || showSource);
 
 	onMount(() => {
 		editor = new Editor({
 			element: el,
 			extensions: [
-				StarterKit.configure({ link: { openOnClick: false } }),
+				StarterKit.configure({
+					link: {
+						openOnClick: false,
+						HTMLAttributes: { target: null, rel: null }
+					}
+				}),
 				TextAlign.configure({
 					types: ['heading', 'paragraph'],
 					alignments: ['left', 'center', 'right']
@@ -142,28 +151,57 @@
     if (!url) return;
     run((c) => c.extendMarkRange('link').setLink({ href: url, class: 'button' }));
   }
+
+	function toggleSource() {
+		if (!showSource) {
+			source = (value ?? '').replace(/(<\/(p|h[1-6]|ul|ol|li|blockquote)>)/g, '$1\n').trim();
+		}
+		showSource = !showSource;
+		if (!showSource) {
+			editor.commands.focus();
+		}
+	}
+
+	// typing in the source view: run it through the editor so what gets saved is always clean
+	function handleSourceInput() {
+		editor.commands.setContent(source, { emitUpdate: false });
+		handleInput(editor);
+	}
 </script>
 
 
 <div class="field" class:disabled>
 	<div class="toolbar">
-		<button type="button" data-tip="Bold" aria-label="Bold" {disabled} class:active={isActive('bold')} onclick={() => run((c) => c.toggleBold())}><Bold /></button>
-		<button type="button" data-tip="Italic" aria-label="Italic" {disabled} class:active={isActive('italic')} onclick={() => run((c) => c.toggleItalic())}><Italic /></button>
+		<button type="button" data-tip="Bold" aria-label="Bold" disabled={toolsDisabled} class:active={isActive('bold')} onclick={() => run((c) => c.toggleBold())}><Bold /></button>
+		<button type="button" data-tip="Italic" aria-label="Italic" disabled={toolsDisabled} class:active={isActive('italic')} onclick={() => run((c) => c.toggleItalic())}><Italic /></button>
 		<span class="sep"></span>
-		<button type="button" data-tip="Heading" aria-label="Heading" {disabled} class:active={isActive('heading', { level: 2 })} onclick={() => run((c) => c.toggleHeading({ level: 2 }))}><Heading2 /></button>
-		<button type="button" data-tip="Subheading" aria-label="Subheading" {disabled} class:active={isActive('heading', { level: 3 })} onclick={() => run((c) => c.toggleHeading({ level: 3 }))}><Heading3 /></button>
+		<button type="button" data-tip="Heading" aria-label="Heading" disabled={toolsDisabled} class:active={isActive('heading', { level: 2 })} onclick={() => run((c) => c.toggleHeading({ level: 2 }))}><Heading2 /></button>
+		<button type="button" data-tip="Subheading" aria-label="Subheading" disabled={toolsDisabled} class:active={isActive('heading', { level: 3 })} onclick={() => run((c) => c.toggleHeading({ level: 3 }))}><Heading3 /></button>
 		<span class="sep"></span>
-		<button type="button" data-tip="Align left" aria-label="Align left" {disabled}class:active={isActive({ textAlign: 'left' })} onclick={() => run((c) => c.unsetTextAlign())}><AlignLeft /></button>
-		<button type="button" data-tip="Centre" aria-label="Centre" {disabled} class:active={isActive({ textAlign: 'center' })} onclick={() => run((c) => c.setTextAlign('center'))}><AlignCenter /></button>
-		<button type="button" data-tip="Align right" aria-label="Align right" {disabled} class:active={isActive({ textAlign: 'right' })} onclick={() => run((c) => c.setTextAlign('right'))}><AlignRight /></button>
+		<button type="button" data-tip="Align left" aria-label="Align left" disabled={toolsDisabled} class:active={isActive({ textAlign: 'left' })} onclick={() => run((c) => c.unsetTextAlign())}><AlignLeft /></button>
+		<button type="button" data-tip="Centre" aria-label="Centre" disabled={toolsDisabled} class:active={isActive({ textAlign: 'center' })} onclick={() => run((c) => c.setTextAlign('center'))}><AlignCenter /></button>
+		<button type="button" data-tip="Align right" aria-label="Align right" disabled={toolsDisabled} class:active={isActive({ textAlign: 'right' })} onclick={() => run((c) => c.setTextAlign('right'))}><AlignRight /></button>
 		<span class="sep"></span>
-		<button type="button" data-tip="Bullet list" aria-label="Bullet list" {disabled} class:active={isActive('bulletList')} onclick={() => run((c) => c.toggleBulletList())}><List /></button>
-		<button type="button" data-tip="Numbered list" aria-label="Numbered list" {disabled} class:active={isActive('orderedList')} onclick={() => run((c) => c.toggleOrderedList())}><ListOrdered /></button>
-		<button type="button" data-tip="Link" aria-label="Link" {disabled} class:active={isActive('link')} onclick={setLink}><Link /></button>
-    <button type="button" data-tip="Button" aria-label="Button" {disabled} class:active={isActive('link', { class: 'button' })} onclick={setButton}><MousePointerClick /></button>
+		<button type="button" data-tip="Bullet list" aria-label="Bullet list" disabled={toolsDisabled} class:active={isActive('bulletList')} onclick={() => run((c) => c.toggleBulletList())}><List /></button>
+		<button type="button" data-tip="Numbered list" aria-label="Numbered list" disabled={toolsDisabled} class:active={isActive('orderedList')} onclick={() => run((c) => c.toggleOrderedList())}><ListOrdered /></button>
+		<button type="button" data-tip="Link" aria-label="Link" disabled={toolsDisabled} class:active={isActive('link')} onclick={setLink}><Link /></button>
+    <button type="button" data-tip="Button" aria-label="Button" disabled={toolsDisabled} class:active={isActive('link', { class: 'button' })} onclick={setButton}><MousePointerClick /></button>
+		<span class="sep"></span>
+		<button type="button" data-tip={showSource ? 'Back to editor' : 'HTML code'} aria-label="HTML code" aria-pressed={showSource} {disabled} class:active={showSource} onclick={toggleSource}><CodeXml /></button>
 	</div>
 
-	<div class="editor" bind:this={el}></div>
+	<div class="editor" bind:this={el} hidden={showSource}></div>
+
+	{#if showSource}
+		<textarea
+			class="source"
+			bind:value={source}
+			oninput={handleSourceInput}
+			onblur={handleBlur}
+			{disabled}
+			spellcheck="false"
+		></textarea>
+	{/if}
 
 	{#if name}
 		<input type="hidden" {name} {value} />
@@ -284,4 +322,21 @@
     color: #fff;
     text-decoration: none;
   }
+
+	.editor[hidden] {
+		display: none;
+	}
+
+	.source {
+		display: block;
+		width: 100%;
+		min-height: 12em;
+		padding: 0.5em 2.5em 0.5em 0.75em;
+		border: none;
+		border-radius: 0 0 6px 6px;
+		font: 0.85rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		color: #334155;
+		resize: vertical;
+		outline: none;
+	}
 </style>

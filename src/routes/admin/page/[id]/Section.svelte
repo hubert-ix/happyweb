@@ -83,7 +83,7 @@
   {/if}
 
   <FormItem label="Heading" id="heading">
-    <TextInput name="heading" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
+    <TextInput name="heading" class="full-width" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
   </FormItem>
 
   <!--
