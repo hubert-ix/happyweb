@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/state';
+	import Snackbar from '#lib/UI/Snackbar.svelte';
   import '#lib/styles/common.css';
 
 	let { data, children } = $props();
@@ -12,3 +13,4 @@
 </svelte:head>
 
 {@render children()}
+<Snackbar />

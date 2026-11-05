@@ -8,6 +8,7 @@ export const actions = {
 		// get the form values
 		let values = {
 			site_name: String(data.get('site_name') ?? '').trim(),
+			footer_text: String(data.get('footer_text') ?? '').trim(),
 			logo_url: data.get('logo_url') || null,
 			favicon_url: data.get('favicon_url') || null
 		};

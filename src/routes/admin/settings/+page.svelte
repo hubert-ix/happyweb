@@ -1,5 +1,6 @@
 <script>
   import { enhance } from '$app/forms';
+  import { snackbar } from '#lib/UI/Snackbar.svelte.js';
   import FileInput from '#lib/forms/FileInput.svelte';
   import FormItem from '#lib/forms/FormItem.svelte';
   import TextInput from '#lib/forms/TextInput.svelte';
@@ -8,6 +9,7 @@
   let { data, form } = $props();
   let initial = form?.values ?? data.settings ?? {};
   let siteName = $state(initial.site_name ?? '');
+  let footerText = $state(initial.footer_text ?? '');
   let logoUrl = $state(initial.logo_url ?? '');
   let faviconUrl = $state(initial.favicon_url ?? '');
   let submitting = $state(false);
@@ -21,6 +23,7 @@
     submitting = true;
     return async ({ update }) => {
       await update({ reset: false });
+      snackbar.show('Settings saved');
       submitting = false;
     };
   }
@@ -31,6 +34,10 @@
 
   <FormItem label="Website name" id="site_name" description="This is what is displayed in Google, and also at the top of the browser" errorMessage={errors?.site_name}>
     <TextInput name="site_name" bind:value={siteName} autocomplete="off" class={errors?.site_name ? 'error' : ''} />
+  </FormItem>
+
+  <FormItem label="Footer text" id="footer_text" description="This is displayed at the very bottom of every page" errorMessage={errors?.footer_text}>
+    <TextInput name="footer_text" bind:value={footerText} autocomplete="off" class={errors?.footer_text ? 'error' : ''} />
   </FormItem>
 
   <FormItem label="Header logo" id="logo" description="This image will go at the left side of the navigation bar at the top">
@@ -49,10 +56,6 @@
     </Button>
   </div>
 
-  {#if form?.saved}
-    <p class="saved">Settings saved.</p>
-  {/if}
-
   {#if errors?.form}
     <div class="error">{errors.form}</div>
   {/if}
@@ -63,10 +66,6 @@
 <style>
   form {
     max-width: 32rem;
-  }
-
-  .saved {
-    color: #349500;
   }
 
   .error {

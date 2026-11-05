@@ -2,6 +2,7 @@
 	import { page as currentPage } from '$app/state';
 	import { enhance } from '$app/forms';
 	import { validatePage } from './pageValidation.js';
+  import { snackbar } from '#lib/UI/Snackbar.svelte.js';
 	import Button from '#lib/UI/Button.svelte';
 	import FormItem from '#lib/forms/FormItem.svelte';
 	import TextInput from '#lib/forms/TextInput.svelte';
@@ -12,10 +13,8 @@
 		form = undefined,
 		page = undefined,
 		pages = [],
-		submitLabel = 'Save this page',
-		submittingLabel = 'Saving…'
 	} = $props();
-	
+
 	let initial = form?.values ?? page ?? {};
 	let title = $state(initial.title ?? '');
 	let path = $state(initial.path ?? '');
@@ -27,12 +26,24 @@
 
 	let pathTouched = $state(Boolean(initial.path));
 	let submitting = $state(false);
-	let clientErrors = $state(null);
 	let errors = $derived(form?.errors ?? null);
 
+	let buttonLabel = (page)?"Save page settings":"Create page";
+
+	function slugifySegment(text = '') {
+		return text
+			.normalize('NFKD')
+			.replace(/[\u0300-\u036f]/g, '') // strip accents: é → e
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-z0-9\s_-]/g, '') // keep letters, digits, spaces, _ and -
+			.replace(/[\s_-]+/g, '-') // spaces/underscores/dash runs → single dash
+			.replace(/^-+|-+$/g, ''); // trim leading/trailing dashes
+	}
+
 	function slugify(text = '') {
-  	return text.split('/').map(slugify).filter(Boolean).join('/');
-  }
+		return text.split('/').map(slugifySegment).filter(Boolean).join('/');
+	}
 
 	function recheck(fields, values) {
 		if (!errors) return;
@@ -47,8 +58,8 @@
 	function onTitleInput(e) {
 		const value = e.target.value;
 		if (!pathTouched) {
-      path = slugify(value);
-    }
+			path = slugifySegment(value);
+		}
 		recheck(pathTouched ? ['title'] : ['title', 'path'], { title: value, path });
 	}
 
@@ -58,7 +69,7 @@
 	}
 
 	function onPathBlur() {
-		path = slugify(path || title);
+		path = slugify(path) || slugifySegment(title);
 	}
 
 	function handleSubmit({ cancel }) {
@@ -70,20 +81,26 @@
 		submitting = true;
 		return async ({ update }) => {
 			await update({ reset: false });
+			if (page) {
+				snackbar.show("The page settings have been saved, phew!");
+			}
+			else {
+				snackbar.show('Your page has been created, woo-hoo!');
+			}
 			submitting = false;
 		};
 	}
 </script>
 
 
-<form	method="POST" use:enhance={handleSubmit}>
-	
+<form method="POST" use:enhance={handleSubmit}>
+
 	<FormItem label="Page title" id="title" errorMessage={errors?.title}>
-		<TextInput name="title" placeholder="A simple but eloquent title for the page"	bind:value={title} autocomplete="off"	class={errors?.title ? 'error' : ''} oninput={onTitleInput} />
+		<TextInput name="title" placeholder="A simple but eloquent title for the page" bind:value={title} autocomplete="off" class={errors?.title ? 'error' : ''} oninput={onTitleInput} />
 	</FormItem>
 
 	<FormItem label="Page address" id="path" errorMessage={errors?.path}>
-		<TextInput name="path" placeholder="Something like 'about-us', or 'a-cool-news'" bind:value={path} autocomplete="off" class={errors?.path ? 'error' : ''} oninput={onPathInput}	onblur={onPathBlur}	/>
+		<TextInput name="path" placeholder="Something like 'about-us', or 'a-cool-news'" bind:value={path} autocomplete="off" class={errors?.path ? 'error' : ''} oninput={onPathInput} onblur={onPathBlur} />
 	</FormItem>
 
 	<!--
@@ -98,7 +115,7 @@
 		</FormItem>
 
 		<FormItem label="Description" id="meta_description" description="This is also optional. It is used for search engines like Google">
-			<TextInput name="meta_description" controlType="textarea"	bind:value={metaDescription} autocomplete="off" />
+			<TextInput name="meta_description" controlType="textarea" bind:value={metaDescription} autocomplete="off" />
 		</FormItem>
 
 		<FormItem label="Show this page in the menu system" id="in_menu" description="If you have something like a privacy policy page that you don't want to appear in the menu, uncheck this">
@@ -112,16 +129,17 @@
 
 	<div class="flex margin-top-large">
 		<Button type="submit" disabled={submitting}>
-			{submitting ? submittingLabel : submitLabel}
+			{submitting ? "Saving..." : buttonLabel}
 		</Button>
-
-		<a href={currentPage.url.searchParams.get('returnURL') ?? '/admin'}>Nope, cancel that</a>
+		{#if !page && !submitting}
+			<a href={currentPage.url.searchParams.get('returnURL') ?? '/admin'}>Nope, cancel that</a>
+		{/if}
 	</div>
 
-  {#if form?.errors?.form}
+	{#if form?.errors?.form}
 		<div class="error">
-      {form.errors.form}
-    </div>
+			{form.errors.form}
+		</div>
 	{/if}
 
 </form>
