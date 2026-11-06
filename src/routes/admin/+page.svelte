@@ -20,7 +20,7 @@
 </div>
 -->
 
-<div class="margin-bottom-large">
+<div class="margin-bottom-medium">
   <Button href="/admin/page/create">
     <CirclePlus />
     Create a new awesome page

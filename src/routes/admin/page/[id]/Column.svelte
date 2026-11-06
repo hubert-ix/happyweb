@@ -124,6 +124,9 @@
   .column {
     min-height: 10rem;
     position: relative;
+    padding: 1rem;
+    border: dashed 1px #ddd;
+    border-radius: 0.5rem;
   }
 
   .add-block-buttons {

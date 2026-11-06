@@ -27,14 +27,17 @@
 </div>
 
 <div class="header flex">
-	<h1>Edit '{data.page.title}'</h1>
-	{#if !data.page.published}
-		<div class="chip">
-			Unpublished
-		</div>
-	{/if}
-	<button class="bare" data-tip="View this page" onclick={() => goto("/" + data.page.path)}>
+	<div class="flex">
+		<h1>Edit '{data.page.title}'</h1>
+		{#if !data.page.published}
+			<div class="chip">
+				Unpublished
+			</div>
+		{/if}
+	</div>
+	<button class="view" onclick={() => goto("/" + data.page.path)}>
 		<Eye />
+		View this page
 	</button>
 </div>
 
@@ -45,11 +48,6 @@
 
 <style>
 	.back {
-		/*
-		position: absolute;
-		top: 0;
-		right: 2rem;
-		*/
 		position: relative;
 		top: 2rem;
 	}
@@ -60,7 +58,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
-		color: #6899be;
+		color: #777;
 	}
 
 	.chip {
@@ -68,9 +66,31 @@
 		align-items: center;
 		padding: 0.25em 1em;
 		border-radius: 999px;
-		background: #f9d6ff;
-		color: #5e0e92;
+		background: #f8e7e6;
+		color: #973f3c;
 		font-size: 0.75rem;
 		white-space: nowrap;
+	}
+
+	.header {
+		justify-content: space-between;
+	}
+
+	button.view {
+		display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+		background-color: #fafafa;
+    border: 1px solid rgb(214, 210, 203);
+    border-radius: 0.5rem;
+    color: #555;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: background-color 0.2s;
+	}
+
+	button.view:hover {
+		background-color: #eee;
 	}
 </style>

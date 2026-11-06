@@ -13,6 +13,7 @@
   import Move from '@lucide/svelte/icons/move';
   import Trash from '@lucide/svelte/icons/trash';
   import ChevronRight from '@lucide/svelte/icons/chevron-right';
+  import ChevronUp from '@lucide/svelte/icons/chevron-up';
   import Column from "./Column.svelte";
   import LayoutPicker from "./LayoutPicker.svelte";
 
@@ -20,6 +21,7 @@
   let showDeletePopup = $state(false);
   let showSettings = $state(false);
   let showIntro = $state(false);
+  let showContent = $state(true);
   let layout = $derived(section.layout ?? defaultLayout);
   let current = $derived(getLayout(layout));
   let columns = $derived([...section.columns].sort((a, b) => a.index - b.index));
@@ -40,10 +42,13 @@
 </script>
 
 
-<div class="section" transition:fade>
+<div class="section" class:hide-content={showContent} transition:fade>
 
-  <div class="toolbar flex">
-    <div class="toolbar-left flex">
+  <div class="section-header flex">
+    <div class="section-header-left flex">
+      <div class="section-name">
+        Section {section.index + 1}
+      </div>
       <!--<Move />-->
       {#if section.hidden}
         <div class="hidden-label">
@@ -58,65 +63,74 @@
       <button class="bare delete" data-tip="Delete this section" onclick={() => showDeletePopup = true}>
         <Trash />
       </button>
+      <button class="bare show-content" onclick={() => showContent = !showContent}>
+        <ChevronUp />
+      </button>
     </div>
   </div>
 
-  {#if showSettings}
-    <div class="options margin-bottom-medium" transition:slide>
-      <div class="options-left width-medium">
-        <FormItem label="Anchor name" id="anchor-{section.id}" description="This is used to click on a link and jump to this section">
-          <TextInput name="anchor-{section.id}" bind:value={section.anchor} />
-        </FormItem>
-        <FormItem label="Section background image" id="background">
-          <FileInput name="block-image" folder="images" bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
-        </FormItem>
+  {#if showContent}
+    <div class="section-content" transition:slide>
+
+      {#if showSettings}
+        <div class="options margin-bottom-medium" transition:slide>
+          <div class="options-left width-medium">
+            <FormItem label="Anchor name" id="anchor-{section.id}" description="This is used to click on a link and jump to this section">
+              <TextInput name="anchor-{section.id}" bind:value={section.anchor} />
+            </FormItem>
+            <FormItem label="Section background image" id="background">
+              <FileInput name="block-image" folder="images" bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
+            </FormItem>
+          </div>
+          <div class="options-right">
+            <FormItem>
+              <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
+            </FormItem>
+            <FormItem>
+              <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
+            </FormItem>
+          </div>
+        </div>
+      {/if}
+
+      <FormItem label="Heading" id="heading">
+        <TextInput name="heading" class="full-width" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
+      </FormItem>
+
+      <!--
+      <div class="intro margin-bottom-small">
+        <button class="bare" class:opened={showIntro} onclick={() => showIntro = !showIntro}>
+          <div class="icon">
+            <ChevronRight />
+          </div>
+          Optional intro
+        </button>
+
+        {#if showIntro}
+          <div transition:slide>
+            <RichTextInput name="intro" placeholder="Optional intro text" bind:value={section.intro} onFinishedTyping={() => saveSectionKey("intro")} />
+          </div>
+        {/if}
       </div>
-      <div class="options-right">
-        <FormItem>
-          <Toggle bind:checked={section.hidden} label="Hide this section" onchange={() => saveSectionKey("hidden")}/>
-        </FormItem>
-        <FormItem>
-          <Toggle bind:checked={section.center_heading} label="Center the heading" onchange={() => saveSectionKey("center_heading")} />
-        </FormItem>
+      -->
+
+      <FormItem label="Layout">
+        <LayoutPicker bind:value={layout} onchange={saveLayout} />
+      </FormItem>
+
+      <div class="columns" style:grid-template-columns={tracks(current)}>
+        {#each columns as column, i (column.id)}
+          {@const hidden = i >= current.columns}
+          <div class="track" class:hidden inert={hidden}>
+            <div class="pad">
+              <Column {column} />
+            </div>
+          </div>
+        {/each}
       </div>
+
     </div>
   {/if}
-
-  <FormItem label="Heading" id="heading">
-    <TextInput name="heading" class="full-width" bind:value={section.heading} placeholder="Optional heading" onFinishedTyping={() => saveSectionKey("heading")} />
-  </FormItem>
-
-  <!--
-  <div class="intro margin-bottom-small">
-    <button class="bare" class:opened={showIntro} onclick={() => showIntro = !showIntro}>
-      <div class="icon">
-        <ChevronRight />
-      </div>
-      Optional intro
-    </button>
-
-    {#if showIntro}
-      <div transition:slide>
-        <RichTextInput name="intro" placeholder="Optional intro text" bind:value={section.intro} onFinishedTyping={() => saveSectionKey("intro")} />
-      </div>
-    {/if}
-  </div>
-  -->
-
-  <FormItem label="Layout">
-    <LayoutPicker bind:value={layout} onchange={saveLayout} />
-  </FormItem>
-
-  <div class="columns" style:grid-template-columns={tracks(current)}>
-    {#each columns as column, i (column.id)}
-      {@const hidden = i >= current.columns}
-      <div class="track" class:hidden inert={hidden}>
-        <div class="pad">
-          <Column {column} />
-        </div>
-      </div>
-    {/each}
-  </div>
 
 </div>
 
@@ -136,8 +150,32 @@
     border: solid 1px #ccc;
     background: #faf9f6; /* #f4f2ec */
     border-radius: 0.5rem;
-    padding: 1rem 1rem 2rem;
     margin-bottom: 2rem;
+  }
+
+  .section-header {
+    justify-content: space-between;
+    background: #e9e9e0;
+    border-bottom: solid 1px #ddd;
+    padding: 1rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+
+  .section-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgb(107, 102, 94);
+  }
+
+  .hidden-label {
+    opacity: 0.4;
+    font-style: italic;
+  }
+
+  .section-content {
+    padding: 1rem 1rem 2rem;
   }
 
   .intro button {
@@ -156,15 +194,6 @@
 
   .intro button.opened .icon {
     transform: rotate(90deg);
-  }
-
-  .toolbar {
-    justify-content: space-between;
-  }
-
-  .hidden-label {
-    opacity: 0.4;
-    font-style: italic;
   }
 
   .options {
@@ -196,5 +225,14 @@
 
   .pad {
     padding-inline: 1rem;   /* replaces gap: 2rem */
+  }
+
+  button.show-content {
+    transform:rotate(180deg);
+    transition: transform 0.3s;
+  }
+
+  .hide-content button.show-content {
+    transform:rotate(0deg);
   }
 </style>
