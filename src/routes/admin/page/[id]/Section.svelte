@@ -42,9 +42,9 @@
 
 <div class="section" transition:fade>
 
-  <div class="toolbar flex margin-bottom-small">
+  <div class="toolbar flex">
     <div class="toolbar-left flex">
-      <Move />
+      <!--<Move />-->
       {#if section.hidden}
         <div class="hidden-label">
           Hidden section

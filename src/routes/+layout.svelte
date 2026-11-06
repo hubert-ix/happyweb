@@ -8,8 +8,9 @@
 
 
 <svelte:head>
-	<link rel="icon" href={data.settings?.favicon ?? "/images/favicon.svg"} />
-	<title>{page.data.pageTitle} | {data.settings?.site_name}</title>
+	<link rel="icon" href={data.settings?.favicon_url ?? "/images/favicon.svg"} />
+	<title>{page.data.pageTitle ? page.data.pageTitle + ' | ' : ''}{data.settings?.site_name}</title>
+	<meta name="description" content={page.data.page?.meta_description} />
 </svelte:head>
 
 {@render children()}

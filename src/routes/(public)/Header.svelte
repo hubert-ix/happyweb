@@ -9,7 +9,7 @@
   <div class="container header">
     <nav>
       {#if settings?.logo_url}
-        <a href="/" class="logo"><img src={settings.logo_url} /></a>
+        <a href="/" class="logo"><img src={settings.logo_url} alt={settings.site_name} /></a>
       {/if}
       {#each pages as link (link.id)}
         <a href={link.is_home ? '/' : `/${link.path}`} class:selected={link.id === topPageId}>{link.title}</a>
