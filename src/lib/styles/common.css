@@ -149,7 +149,7 @@ img {
   padding: 0.75rem 1rem;
   border: 1px solid transparent;
   border-radius: 0.5rem;
-  background: #119501;
+  background: #41b233;
   color: #fff;
   font: inherit;
   line-height: 1.2;
@@ -199,7 +199,7 @@ button.bare {
 }
 
 button.delete {
-  color: var(--color-error);
+  color: #000;
 }
 
  /* tooltip */

@@ -20,7 +20,3 @@
 	</button>
 {/if}
 
-
-<style>
-	
-</style>

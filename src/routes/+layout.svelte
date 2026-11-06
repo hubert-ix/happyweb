@@ -8,7 +8,7 @@
 
 
 <svelte:head>
-	<link rel="icon" href={data.settings?.favicon_url ?? "/images/favicon.svg"} />
+	<link rel="icon" href={data.settings?.favicon_url ?? "/images/favicon.ico"} />
 	<title>{page.data.pageTitle ? page.data.pageTitle + ' | ' : ''}{data.settings?.site_name}</title>
 	{#if page.data.page?.meta_description}
    	<meta name="description" content={page.data.page.meta_description} />

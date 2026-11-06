@@ -35,8 +35,8 @@
 	}
 
 	a.selected {
-		color: #d8716f;
-		border-bottom-color: #d8716f;
+		color: #4074a9;
+		border-bottom-color: #568ea9;
 	}
 
 	a:focus-visible {

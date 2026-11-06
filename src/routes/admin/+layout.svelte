@@ -49,7 +49,10 @@
 	<main>
 		{#if segment != 'page'}
 			<div class="container padding">
-				<h1>Amazing admin dashboard</h1>
+				<h1>
+					<img src="/images/favicon.ico" />
+					Amazing admin dashboard
+				</h1>
 				<Tabs {tabs} {segment} />
 				{@render children?.()}
 			</div>
