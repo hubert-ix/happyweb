@@ -1,8 +1,15 @@
-<footer>
-  <div class="container">
-    Copyright&copy;2026 HappyWeb
-  </div>
-</footer>
+<script>
+  let { settings } = $props();
+</script>
+
+
+{#if settings.footer_text}
+  <footer>
+    <div class="container">
+      {settings.footer_text}
+    </div>
+  </footer>
+{/if}
 
 
 <style>

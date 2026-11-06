@@ -16,7 +16,7 @@
     {@render children()}
   </main>
 
-	<Footer />
+	<Footer settings={data.settings} />
 
 </div>
 
