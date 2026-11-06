@@ -24,7 +24,7 @@
   }
 
   .quote {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-style: italic;
     color: #3b7285;
     padding: 1rem 0;

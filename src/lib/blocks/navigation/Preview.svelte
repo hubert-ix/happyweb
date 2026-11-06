@@ -1,5 +1,5 @@
 <div>
-  Navigation block
+  Links to the pages under this page will be displayed automatically
 </div>
 
 

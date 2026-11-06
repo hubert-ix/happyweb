@@ -14,7 +14,7 @@
   {/if}
 {:else}
   <div class="empty">
-    No quote has been entered yet
+    Click the edit button to start entering a great quote
   </div>
 {/if}
 
