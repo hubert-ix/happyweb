@@ -66,8 +66,8 @@
 		align-items: center;
 		padding: 0.25em 1em;
 		border-radius: 999px;
-		background: #f8e7e6;
-		color: #973f3c;
+		background: #fcedc7;
+		color: #925e0e;
 		font-size: 0.75rem;
 		white-space: nowrap;
 	}

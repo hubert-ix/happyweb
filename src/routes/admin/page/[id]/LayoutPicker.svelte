@@ -46,10 +46,6 @@
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   }
 
-  button.active {
-    border-color: #e36f6f;
-  }
-
   button:hover {
     transform: translateY(-2px);
   }
@@ -66,7 +62,11 @@
     border-radius: 2px;
   }
 
+  button.active {
+    border-color: #6195b9;
+  }
+  
   button.active .icon span {
-    background: #e36f6f;
+    background: #6195b9;
   }
 </style>

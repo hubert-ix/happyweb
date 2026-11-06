@@ -147,7 +147,6 @@
 
   .toolbar {
     justify-content: space-between;
-    color: #999;
   }
 
   .status {
@@ -172,8 +171,8 @@
 		align-items: center;
 		padding: 0.25em 1em;
 		border-radius: 0.25rem;
-		background: #f8e7e6;
-		color: #973f3c;
+		background: #eee;
+		color: #555;
 		font-size: 0.75rem;
 		white-space: nowrap;
   }
