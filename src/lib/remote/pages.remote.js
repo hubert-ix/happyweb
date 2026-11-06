@@ -1,14 +1,6 @@
 import { query, command, getRequestEvent } from '$app/server';
+import { requireUser } from '#lib/server/auth.js';
 import { error } from '@sveltejs/kit';
-
-// CREATE
-export const addPage = command('unchecked', async (values) => {
-	const locals = await requireUser();
-	const { data, error: insertError } = await locals.supabase.from('page').insert(values).select().single();
-	if (insertError) throw insertError;
-	return { page: data };
-});
-
 
 // READ ONE
 export const getPage = query('unchecked', async (arg) => {
@@ -43,6 +35,13 @@ export const getPage = query('unchecked', async (arg) => {
 	return { page: { ...page, top_parent_id, nav_pages } };
 });
 
+// CREATE
+export const addPage = command('unchecked', async (values) => {
+	const locals = await requireUser();
+	const { data, error: insertError } = await locals.supabase.from('page').insert(values).select().single();
+	if (insertError) throw insertError;
+	return { page: data };
+});
 
 // UPDATE
 export const updatePage = command('unchecked', async ({ id, values }) => {
@@ -51,7 +50,6 @@ export const updatePage = command('unchecked', async ({ id, values }) => {
 	if (updateError) throw updateError;
 	return {};
 });
-
 
 // DELETE
 export const deletePage = command('unchecked', async (id) => {
@@ -122,11 +120,4 @@ async function getMenuPage(supabase, id) {
 		.maybeSingle();
 	if (fetchError) throw fetchError;
 	return data;
-}
-
-async function requireUser() {
-	const { locals } = getRequestEvent();
-	const { user } = await locals.safeGetSession();
-	if (!user) error(401, 'Not signed in');
-	return locals;
 }

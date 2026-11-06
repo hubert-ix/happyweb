@@ -1,4 +1,5 @@
 import { query, command, getRequestEvent } from '$app/server';
+import { requireUser } from '#lib/server/auth.js';
 import { error } from '@sveltejs/kit';
 
 // READ
@@ -11,7 +12,7 @@ export const getSettings = query(async () => {
 
 // UPDATE
 export const updateSettings = command('unchecked', async (values) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const { user } = await locals.safeGetSession();
 	if (!user) error(401, 'Not signed in');
 	const { error: updateError } = await locals.supabase

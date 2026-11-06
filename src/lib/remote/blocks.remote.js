@@ -1,18 +1,6 @@
 import { query, command, getRequestEvent } from '$app/server';
+import { requireUser } from '#lib/server/auth.js';
 import { error } from '@sveltejs/kit';
-
-// CREATE
-export const addBlock = command('unchecked', async ({ columnId, type }) => {
-	const { locals } = getRequestEvent();
-	// index = number of existing blocks in this column
-	const { count, error: countError } = await locals.supabase.from('block').select('id', { count: 'exact', head: true }).eq('column_id', columnId);
-	if (countError) throw countError;
-  // insert the block
-  const { data, error: insertError } = await locals.supabase.from('block').insert({ column_id: columnId, type, index: count ?? 0 }).select().single();
-  if (insertError) throw insertError;
-	return { block: data };
-});
-
 
 // READ ONE
 export const getBlock = query('unchecked', async (id) => {
@@ -22,19 +10,29 @@ export const getBlock = query('unchecked', async (id) => {
 	return { block: data };
 });
 
+// CREATE
+export const addBlock = command('unchecked', async ({ columnId, type }) => {
+	const locals = await requireUser();
+	// index = number of existing blocks in this column
+	const { count, error: countError } = await locals.supabase.from('block').select('id', { count: 'exact', head: true }).eq('column_id', columnId);
+	if (countError) throw countError;
+  // insert the block
+  const { data, error: insertError } = await locals.supabase.from('block').insert({ column_id: columnId, type, index: count ?? 0 }).select().single();
+  if (insertError) throw insertError;
+	return { block: data };
+});
 
 // UPDATE
 export const updateBlock = command('unchecked', async ({ id, values }) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const { error: updateError } = await locals.supabase.from('block').update(values).eq('id', id);
 	if (updateError) throw updateError;
 	return {};
 });
 
-
 // DELETE
 export const deleteBlock = command('unchecked', async (id) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const { error: deleteError } = await locals.supabase.from('block').delete().eq('id', id);
 	if (deleteError) throw deleteError;
 	return {};
@@ -42,7 +40,7 @@ export const deleteBlock = command('unchecked', async (id) => {
 
 // REORDER: blockIds in their new order inside columnId
 export const reorderBlocks = command('unchecked', async ({ columnId, blockIds }) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	if (!Array.isArray(blockIds)) error(400, 'Invalid block list');
 	const results = await Promise.all(
 		blockIds.map((id, index) =>
