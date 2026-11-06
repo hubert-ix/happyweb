@@ -1,4 +1,5 @@
 import { command, query, getRequestEvent } from '$app/server';
+import { requireUser } from '#lib/server/auth.js';
 import { error } from '@sveltejs/kit';
 
 const PUBLIC_PREFIX = '/storage/v1/object/public/files/';
@@ -24,7 +25,7 @@ export const getUploadUrl = command('unchecked', async ({ folder, filename }) =>
 
 // every image in files/[folder], newest first
 export const listImages = query('unchecked', async (folder) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	const safeFolder = cleanFolder(folder);
 	const storage = locals.supabase.storage.from('files');
 	const { data, error: listError } = await storage.list(safeFolder, {
@@ -44,7 +45,7 @@ export const listImages = query('unchecked', async (folder) => {
 
 
 export const deleteFile = command('unchecked', async (publicUrl) => {
-	const { locals } = getRequestEvent();
+	const locals = await requireUser();
 	// only accept URLs pointing into our own "files" bucket
 	let path;
 	try {
