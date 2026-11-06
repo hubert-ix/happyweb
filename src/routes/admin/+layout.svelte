@@ -13,7 +13,7 @@
   let segment = $derived(page.url.pathname.split('/')[2] ?? null);
 	let tabs = [
 		{ label: 'Your pages', href: '/admin', value: "" },
-		{ label: 'Sumptuous settings', href: '/admin/settings', value: "settings" }
+		{ label: 'Sumptuous site settings', href: '/admin/settings', value: "settings" }
 	];
 
 	onMount(() => {

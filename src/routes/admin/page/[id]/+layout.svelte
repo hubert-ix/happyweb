@@ -26,12 +26,17 @@
 	</a>
 </div>
 
-<h1>
-	Edit '{data.page.title}'
+<div class="header flex">
+	<h1>Edit '{data.page.title}'</h1>
+	{#if !data.page.published}
+		<div class="chip">
+			Unpublished
+		</div>
+	{/if}
 	<button class="bare" data-tip="View this page" onclick={() => goto("/" + data.page.path)}>
 		<Eye />
 	</button>
-</h1>
+</div>
 
 <Tabs {tabs} {segment} />
 
@@ -56,5 +61,16 @@
 		align-items: center;
 		gap: 0.25rem;
 		color: #6899be;
+	}
+
+	.chip {
+		display: flex;
+		align-items: center;
+		padding: 0.25em 1em;
+		border-radius: 999px;
+		background: #f9d6ff;
+		color: #5e0e92;
+		font-size: 0.75rem;
+		white-space: nowrap;
 	}
 </style>

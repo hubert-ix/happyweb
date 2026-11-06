@@ -1,4 +1,5 @@
 import { fail, redirect, error } from '@sveltejs/kit';
+import { updatePage } from '#lib/remote/pages.remote.js';
 
 export const actions = {
 	default: async ({ request, locals, params, url }) => {
@@ -17,14 +18,17 @@ export const actions = {
 			return fail(400, { values, errors });
 		}
 		// update the page
-		let { error} = await locals.supabase.from('page').update(values).eq('id', params.id);
-		if (error) {
+		try {
+			await updatePage({ id: params.id, values });
+		} 
+    catch (e) {
+			if (e?.status) throw e; // SvelteKit errors (e.g. 401) pass through
 			// 23505 = unique_violation: the path is already taken
-			if (error.code === '23505') {
+			if (e.code === '23505') {
 				return fail(400, { values, errors: { path: 'A page with this address already exists.' } });
 			}
-			console.error('Failed to create page:', error);
-			return fail(500, { values, errors: { form: 'Could not create the page. Please try again.' } });
+			console.error('Failed to update page:', e);
+			return fail(500, { values, errors: { form: 'Could not save the page. Please try again.' } });
 		}
 		// redirect
 		redirect(303, url.searchParams.get('returnURL') ?? '/admin');

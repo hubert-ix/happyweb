@@ -3,7 +3,7 @@
 </script>
 
 
-{#if settings.footer_text}
+{#if settings?.footer_text}
   <footer>
     <div class="container">
       {settings.footer_text}
