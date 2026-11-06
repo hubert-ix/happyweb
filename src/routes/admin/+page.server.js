@@ -30,6 +30,11 @@ export const actions = {
 		if (!id || !changes || changes.some((c) => String(c.id) === id)) {
 			return fail(400, { error: 'Invalid data.' });
 		}
+		// the home page can't be deleted
+		const { data: target } = await locals.supabase.from('page').select('is_home').eq('id', id).maybeSingle();
+		if (target?.is_home) {
+			return fail(400, { error: 'The home page cannot be deleted.' });
+		}
 		// Hide the direct children from the menu. Done here rather than trusting
 		// the browser, and before the move, while they still point at this page
 		const { error: hideError } = await locals.supabase.from('page').update({ in_menu: false }).eq('parent_id', id);
