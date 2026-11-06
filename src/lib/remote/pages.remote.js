@@ -54,6 +54,8 @@ export const updatePage = command('unchecked', async ({ id, values }) => {
 // DELETE
 export const deletePage = command('unchecked', async (id) => {
 	const locals = await requireUser();
+	const { data: target } = await locals.supabase.from('page').select('is_home').eq('id', id).maybeSingle();
+  if (target?.is_home) error(400, 'The home page cannot be deleted');
 	const { error: deleteError } = await locals.supabase.from('page').delete().eq('id', id);
 	if (deleteError) throw deleteError;
 	return {};

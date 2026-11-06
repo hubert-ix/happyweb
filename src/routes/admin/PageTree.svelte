@@ -240,7 +240,7 @@
 				<a href="/admin/page/{item.id}" class="edit">
 					<Pencil size="18" />
 				</a>
-				<button type="button" class="icon-button" aria-label="Delete {item.title}" onclick={() => openPopup(item.id)}>
+				<button type="button" class="icon-button" aria-label="Delete {item.title}" disabled={item.is_home} onclick={() => openPopup(item.id)}>
 					<Trash size="18"  />
 				</button>
 			</div>
@@ -320,6 +320,11 @@
 		background: none;
 		color: var(--color-error);
 		cursor: pointer;
+	}
+
+	.icon-button:disabled {
+		opacity: 0.2;
+		cursor: default;
 	}
 
 	a.edit {
