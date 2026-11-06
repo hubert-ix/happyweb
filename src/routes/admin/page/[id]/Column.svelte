@@ -103,10 +103,17 @@
 
 {#if showCreatePopup}
   <Modal showCloseButton={true} close={() => showCreatePopup = false}>
-    <h3>What kind of content shall we add?</h3>
+    <p>What kind of awesome content shall we add?</p>
     <div class="add-block-buttons">
       {#each Object.entries(blockTypes) as [key, type]}
-        <button class="bare" onclick={() => createBlock(key)}>{type.label}</button>
+        <button class="block {key}" onclick={() => createBlock(key)}>
+          {#if type.Icon}
+            <div class="block-icon">
+              <type.Icon size="20" />
+            </div>
+          {/if}
+          {type.label}
+        </button>
       {/each}
     </div>
   </Modal>
@@ -121,15 +128,51 @@
 
   .add-block-buttons {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
 
-  .add-block-buttons button {
-    text-align: left;
-    text-decoration: underline;
-    text-underline-position: under;
-    color: #13587a;
+  button.block {
+    background: #f3f4f5;
+    color: #000;
+    height: 82px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    font-size: 1rem;
+    display: flex;
+    position: relative;
+    transition: background-color, border-color, 0.2s;
+    cursor: pointer;
+  }
+
+  button.block:hover {
+    background: #eaebed;
+    border-color: #ccc;
+  }
+
+  .block-icon {
+    color: #999;
+  }
+
+  .text .block-icon {
+    color: oklch(52% .11 200);
+  }
+
+  .image .block-icon {
+    color: oklch(53% .15 355);
+  }
+
+  .quote .block-icon {
+    color: oklch(53% .12 135);
+  }
+
+  .navigation .block-icon {
+    color: oklch(55% .13 250);
   }
 
   .blocks {

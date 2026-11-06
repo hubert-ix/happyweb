@@ -9,7 +9,7 @@
   </div>
 {:else}
   <div class="empty">
-    No text has been entered yet
+    Click the edit button to enter some text
   </div>
 {/if}
 

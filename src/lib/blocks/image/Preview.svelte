@@ -9,7 +9,7 @@
   </div>
 {:else}
   <div class="empty">
-    No image has been added yet
+    Click the edit button to choose an image
   </div>
 {/if}
 
