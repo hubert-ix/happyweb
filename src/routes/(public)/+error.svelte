@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 
 	let notFound = $derived(page.status === 404);
-	let pages = $derived((page.data.pages ?? []).slice(0, 6));
 </script>
 
 

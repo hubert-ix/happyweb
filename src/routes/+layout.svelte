@@ -10,7 +10,9 @@
 <svelte:head>
 	<link rel="icon" href={data.settings?.favicon_url ?? "/images/favicon.svg"} />
 	<title>{page.data.pageTitle ? page.data.pageTitle + ' | ' : ''}{data.settings?.site_name}</title>
-	<meta name="description" content={page.data.page?.meta_description} />
+	{#if page.data.page?.meta_description}
+   	<meta name="description" content={page.data.page.meta_description} />
+  {/if}
 </svelte:head>
 
 {@render children()}
