@@ -26,6 +26,6 @@
 
   .empty {
     font-style: italic;
-    opacity: 0.6;
+    font-size: 0.9rem;
   }
 </style>

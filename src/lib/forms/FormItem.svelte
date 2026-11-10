@@ -36,14 +36,14 @@
   label {
     display: block;
     font-weight: 600;
-    color: #1e293b;
+    color: #000;
     margin-bottom: 0.15rem;
   }
 
   .description {
     font-size: 0.875rem;
     line-height: 1.4;
-    color: #64748b;
+    color: #4f709e;
     margin-bottom: 0.6rem;
   }
 

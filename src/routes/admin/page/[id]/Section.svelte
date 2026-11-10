@@ -79,7 +79,7 @@
               <TextInput name="anchor-{section.id}" bind:value={section.anchor} />
             </FormItem>
             <FormItem label="Section background image" id="background">
-              <FileInput name="block-image" folder="images" bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
+              <FileInput name="block-image" folder="images" includeLibrary={true} inline={true} bind:value={section.background_url} onchange={() => saveSectionKey("background_url")} />
             </FormItem>
           </div>
           <div class="options-right">

@@ -7,6 +7,8 @@
 
 
 {#key data.page.id}
-	<PageForm {form} page={data.page} pages={data.pages} />
+	<div class="sheet">
+		<PageForm {form} page={data.page} pages={data.pages} />
+	</div>
 {/key}
 

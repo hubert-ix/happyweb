@@ -98,8 +98,11 @@
 		border-radius: 6px;
     width: 100%;
 		color: #555;
+    /*
     background: #fcfcfd;
     box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.06);
+    */
+    background: #fff;
     max-width: 32rem;
 	}
 

@@ -143,6 +143,7 @@
     padding: 1rem;
     margin-bottom: 1rem;
     background: #fff;
+    color: #767676;
   }
 
   .toolbar {

@@ -156,6 +156,7 @@ img {
   text-decoration: none;
   cursor: pointer;
   transition: opacity 0.15s;
+  min-height: 50px;
 }
 
 .button:hover {

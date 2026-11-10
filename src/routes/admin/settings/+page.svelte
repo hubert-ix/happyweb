@@ -4,6 +4,8 @@
   import FileInput from '#lib/forms/FileInput.svelte';
   import FormItem from '#lib/forms/FormItem.svelte';
   import TextInput from '#lib/forms/TextInput.svelte';
+  import FontInput from '#lib/forms/FontInput.svelte';
+  import { DEFAULT_BODY_FONT, DEFAULT_HEADING_FONT } from '#lib/fonts.js';
   import Button from '#lib/UI/Button.svelte';
 
   let { data, form } = $props();
@@ -12,6 +14,8 @@
   let footerText = $state(initial.footer_text ?? '');
   let logoUrl = $state(initial.logo_url ?? '');
   let faviconUrl = $state(initial.favicon_url ?? '');
+  let fontBody = $state(initial.font_body ?? '');
+  let fontHeading = $state(initial.font_heading ?? '');
   let submitting = $state(false);
   let errors = $derived(form?.errors ?? null);
 
@@ -21,9 +25,14 @@
       return cancel();
     }
     submitting = true;
-    return async ({ update }) => {
+    return async ({ result, update }) => {
       await update({ reset: false });
-      snackbar.show('Settings saved');
+      if (result.type === 'success') {
+        // show the tidied-up font names, e.g. "lato" becomes "Lato"
+        fontBody = result.data?.values?.font_body ?? '';
+        fontHeading = result.data?.values?.font_heading ?? '';
+        snackbar.show('Settings saved');
+      }
       submitting = false;
     };
   }
@@ -32,6 +41,7 @@
 
 <form method="POST" use:enhance={handleSubmit}>
 
+  <div class="sheet margin-bottom-medium">
   <FormItem label="Website name" id="site_name" description="This is what is displayed in Google, and also at the top of the browser" errorMessage={errors?.site_name}>
     <TextInput name="site_name" bind:value={siteName} autocomplete="off" class={errors?.site_name ? 'error' : ''} />
   </FormItem>
@@ -49,8 +59,21 @@
     <FileInput id="favicon" folder="site" accept="image/png,image/svg+xml,image/x-icon" optimise={false} bind:value={faviconUrl} />
     <input type="hidden" name="favicon_url" value={faviconUrl} />
   </FormItem>
+  </div>
 
-  <div class="flex margin-top-large">
+  <div class="sheet margin-bottom-medium">
+
+  <FormItem label="Text font" id="font_body" description="This is the font used for text throughout the site" errorMessage={errors?.font_body}>
+    <FontInput name="font_body" bind:value={fontBody} defaultFont={DEFAULT_BODY_FONT} class={errors?.font_body ? 'error' : ''} />
+  </FormItem>
+
+  <FormItem label="Headings font" id="font_heading" description="And this is used for titles and headings" errorMessage={errors?.font_heading}>
+    <FontInput name="font_heading" bind:value={fontHeading} defaultFont={DEFAULT_HEADING_FONT} sample="A heading for your page" class={errors?.font_heading ? 'error' : ''} />
+  </FormItem>
+
+  </div>
+
+  <div class="flex">
     <Button type="submit" disabled={submitting}>
       {submitting ? 'Saving…' : 'Save settings'}
     </Button>
@@ -64,10 +87,6 @@
 
 
 <style>
-  form {
-    max-width: 32rem;
-  }
-
   .error {
     color: var(--color-error);
   }

@@ -7,7 +7,7 @@
   import X from '@lucide/svelte/icons/x';
   import Images from '@lucide/svelte/icons/images';
   import ChevronDown from '@lucide/svelte/icons/chevron-down';
-    import Button from '#lib/UI/Button.svelte';
+  import Button from '#lib/UI/Button.svelte';
 
   let {
     value = $bindable(''),
@@ -16,7 +16,8 @@
     name,
     id = name,
     onchange = undefined,
-    includeLibrary = false // adds an "Open library" button listing the images already in files/[folder]
+    includeLibrary = false, // adds an "Open library" button listing the images already in files/[folder]
+    inline = false
   } = $props();
   let progress = $state(0);  // 0–100
   let uploading = $state(false);
@@ -120,7 +121,7 @@
 
 <svelte:window onkeydown={onWindowKeydown} onclick={onWindowClick} />
 
-<div class="file-input">
+<div class="file-input" class:inline={inline}>
 
   {#if value && !uploading}
 
@@ -147,11 +148,12 @@
 
     {#if includeLibrary}
       <div class="library" bind:this={libraryEl}>
-        <Button onclick={toggleLibrary}>
+        <Button class="outline" onclick={toggleLibrary}>
+          <div class="library-icon" class:opened={libraryOpen}><ChevronDown /></div>
           Choose an existing image
         </Button>
         {#if libraryOpen}
-          <div class="dropdown" id="{id}-library" transition:fade={{ duration: 150 }}>
+          <div class="dropdown" id="{id}-library" in:fade={{ duration: 150 }}>
             {#await listImages(folder)}
               <p class="note">Loading images…</p>
             {:then images}
@@ -175,16 +177,20 @@
         {/if}
       </div>
 
-      <div class="margin-bottom-xsmall">
-        or
-      </div>
+      {#if !libraryOpen}
+        <div class:margin-bottom-xsmall={!inline}>
+          or
+        </div>
+      {/if}
     {/if}
 
-    <label class="pick">
-      <Upload size="18" />
-      Choose a file
-      <input type="file" {id} {accept} onchange={upload} />
-    </label>
+    {#if !libraryOpen}
+      <label class="pick">
+        <Upload size="18" />
+        Upload a new file
+        <input type="file" {id} {accept} onchange={upload} />
+      </label>
+    {/if}
 
   {/if}
 
@@ -199,6 +205,12 @@
 <style>
   .file-input {
     overflow: hidden;
+  }
+
+  .file-input.inline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   .current {
@@ -229,13 +241,16 @@
     margin-bottom: 0.75rem;
   }
 
-  .open-library {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
+  .inline .library {
+    margin: 0;
   }
 
-  .open-library :global(.flipped) {
+  .library-icon {
+    display: flex;
+    transition: transform 0.2s;
+  }
+
+  .library-icon.opened {
     transform: rotate(180deg);
   }
 
@@ -291,11 +306,16 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5em;
-    padding: 0.6rem 1rem;
+    padding: 0.75rem 1rem;
     border: dashed 1px #cbd5e1;
-    border-radius: 6px;
+    border-radius: 0.5rem;
     cursor: pointer;
     color: #555;
+    background: #fff;
+
+    background: #4882af;
+    border: none;
+    color: #fff;
   }
 
   .pick:focus-within {

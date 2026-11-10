@@ -20,3 +20,9 @@
 	</button>
 {/if}
 
+
+<style>
+	button.outline {
+		background: #4882af;
+	}
+</style>
